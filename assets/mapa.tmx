@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="33" height="24" tilewidth="32" tileheight="32" nextobjectid="24">
+ <tileset firstgid="1" source="desert.tsx"/>
+ <layer name="Road" width="33" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowA3kARiKRpiaSLcoAjESjTEykPQDSpArEUFrEqBG4hRTwwg1cxRN4y6YdQNg98NOgzUqSN0KXDDYCirB8oNmgzUqSNwYW0i3DAKRjYAADY2Iys=
+  </data>
+ </layer>
+ <layer name="Dust" width="33" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFyEAOCWug8WmF8bkBG9YjQg0pbpfH4wZ6AELhMOqGwesGUtIkqemfFHFKADb98oPADYMhHEbdMLTdQKu6iVhxWoDROmvouIFSTEo7Bh3Qq/2G7NZRgAoAcUYa0g==
+  </data>
+ </layer>
+ <layer name="Barrier" width="33" height="24">
+  <data encoding="base64" compression="zlib">
+   eJzjYmBg4BoEWASIhQYAiyK5gZthYADnqBtG3TDqBorcwAjETGRgZiq6AVktKZgUc0fdMHTcIMhAXp0kTEU30AqMumHUDaNuwO8GGQby6iRKsSwDeWUfLTAA2hIMBw==
+  </data>
+ </layer>
+ <objectgroup name="Collision">
+  <object id="1" x="1" y="1" width="1054" height="44"/>
+  <object id="2" x="0" y="722" width="1055" height="44"/>
+  <object id="6" x="0" y="47" width="45" height="674"/>
+  <object id="7" x="1012" y="48" width="43" height="680"/>
+  <object id="8" x="307" y="305" width="444" height="154"/>
+ </objectgroup>
+ <objectgroup name="SlowDust">
+  <object id="10" x="48" y="49" width="958" height="90"/>
+  <object id="12" x="50" y="632" width="955" height="84"/>
+  <object id="13" x="49" y="143" width="92" height="489"/>
+  <object id="17" x="920" y="132" width="86" height="508"/>
+  <object id="19" x="246" y="246" width="565" height="55"/>
+  <object id="20" x="752" y="291" width="61" height="231"/>
+  <object id="22" x="249" y="465" width="562" height="56"/>
+  <object id="23" x="249" y="293" width="52" height="196"/>
+ </objectgroup>
+</map>
