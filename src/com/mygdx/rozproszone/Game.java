@@ -5,7 +5,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 
 
 public class Game extends ApplicationAdapter {
@@ -14,9 +13,6 @@ public class Game extends ApplicationAdapter {
     public static final int HEIGHT = 768;
     GameStateManager gsm;
     SpriteBatch batch;
-
-    boolean velocityFlag = false;
-    boolean keyPressedFlag;
     
     @Override
     public void create () {

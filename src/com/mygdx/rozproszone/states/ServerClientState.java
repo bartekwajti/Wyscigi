@@ -5,6 +5,7 @@
  */
 package com.mygdx.rozproszone.states;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -27,7 +28,8 @@ public class ServerClientState extends GameState {
     private int selectedOption;
     private String[] options = {
         "Start server",
-        "Join server"
+        "Join server",
+        "Exit Game"
     };
     
     public ServerClientState(GameStateManager gsm) {
@@ -73,6 +75,9 @@ public class ServerClientState extends GameState {
                 // join server
                 gsm.set(new JoinServerState(gsm));
                 dispose();
+            }
+            else if(selectedOption == 2){
+                System.exit(0);
             }
             
         }

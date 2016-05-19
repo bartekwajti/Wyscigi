@@ -38,20 +38,16 @@ public class PlayState extends GameState implements PacketProvider {
     private int playerID = 0;
     Client client;
     
-    private Float angle =360.0f;
     private Float angleDelta = 5.0f;
-    private Float oldX;
-    private Float oldY;
     private Float newX;
     private Float newY;
     boolean velocityFlag = false;
-    boolean keyPressedFlag;
 
     private HashMap<Integer, Player> players = new HashMap<>();
     
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        player1= new Player(80,100,"player1.png");
+        player1= new Player(80,100,"player1.png",360.0f);
         level=new Level("plansza.jpg");
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -66,8 +62,8 @@ public class PlayState extends GameState implements PacketProvider {
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
             velocityFlag = true;
-            newX = new Float (Math.sin(angle*Math.PI/180)*player1.getVelocity()*dt);
-            newY = new Float (Math.cos(angle*Math.PI/180)*player1.getVelocity()*dt);
+            newX = new Float (Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
+            newY = new Float (Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
             checkCollision(newX,newY);
             checkSlowDust(newX,newY);
             
@@ -75,12 +71,12 @@ public class PlayState extends GameState implements PacketProvider {
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             {
                 player1.getCarImage().rotate(-angleDelta);
-                angle += angleDelta;
+                player1.changeAngle((angleDelta));
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
             {
                 player1.getCarImage().rotate(angleDelta);
-                angle -= angleDelta;
+                player1.changeAngle(((angleDelta*-1.0f)));
             }
             if(player1.getVelocity() < 300) player1.changeVelocity(10);
             
@@ -91,8 +87,8 @@ public class PlayState extends GameState implements PacketProvider {
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
             velocityFlag = false;
-            newX = new Float (-Math.sin(angle*Math.PI/180)*player1.getVelocity()*dt);
-            newY = new Float (-Math.cos(angle*Math.PI/180)*player1.getVelocity()*dt);
+            newX = new Float (-Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
+            newY = new Float (-Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
             checkCollision(newX,newY);
             checkSlowDust(newX,newY);
             
@@ -100,74 +96,65 @@ public class PlayState extends GameState implements PacketProvider {
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             {
                 player1.getCarImage().rotate(-angleDelta);
-                angle += angleDelta;
+                player1.changeAngle((angleDelta));
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
             {
                 player1.getCarImage().rotate(angleDelta);
-                angle -= angleDelta;
+                player1.changeAngle(((angleDelta*-1.0f)));
             }
             
             if(player1.getVelocity() < 100) player1.changeVelocity(5);
             
             if(player1.getVelocity() > 50)angleDelta = new Float (600/player1.getVelocity());
-            
-            
+
         }
         else if(player1.getVelocity() > 0)
         {
             if (player1.getAbleToMove()) {
                 
                 if (velocityFlag) {
-                    newX = new Float (Math.sin(angle*Math.PI/180)*player1.getVelocity()*dt);
-                    newY = new Float (Math.cos(angle*Math.PI/180)*player1.getVelocity()*dt);
+                    newX = new Float (Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
+                    newY = new Float (Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
                     player1.changeVelocity(-10);
                     checkCollision(newX,newY);
                     
                     checkSlowDust(newX,newY);
                     
                     player1.changePosition(newX, newY);
-                    //player1.setPositionX((Float) (player1.getPositionX()+Math.sin(angle*Math.PI/180)*player1.getVelocity()*dt));
-                    // player1.setPositionY((Float) (player1.getPositionY()+Math.cos(angle*Math.PI/180)*player1.getVelocity()*dt));
                     
                     if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
                     {
                         player1.getCarImage().rotate(-1);
-                        angle += 1;
+                        player1.changeAngle((1));
                     }
                     else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
                     {
                         player1.getCarImage().rotate(1);
-                        angle -= 1;
+                        player1.changeAngle((-1));
                     }
-                    
-                    
+
                 }
                 else{
                     player1.changeVelocity(-5);
-                    newX = new Float((-Math.sin(angle*Math.PI/180)*player1.getVelocity()*dt));
-                    newY = new Float((-Math.cos(angle*Math.PI/180)*player1.getVelocity()*dt));
+                    newX = new Float((-Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt));
+                    newY = new Float((-Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt));
                     checkCollision(newX,newY);
                     checkSlowDust(newX,newY);
                     
                     player1.changePosition(newX, newY);
-                    // player1.setPositionX((Float) (player1.getPositionX()-Math.sin(angle*Math.PI/180)*player1.getVelocity()*dt));
-                    //player1.setPositionY((Float) (player1.getPositionY()-Math.cos(angle*Math.PI/180)*player1.getVelocity()*dt));
                     
                     if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
                     {
                         player1.getCarImage().rotate(-1);
-                        angle += 1;
+                        player1.changeAngle((1));
                     }
                     else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
                     {
                         player1.getCarImage().rotate(1);
-                        angle -= 1;
+                        player1.changeAngle((-1));
                     }
-                    
                 }
-                
-                
             }
             else{
                 player1.setVelocity(0);
@@ -184,9 +171,9 @@ public class PlayState extends GameState implements PacketProvider {
                 player = players.get(key);
                 player.setPositionX(state.position.x);
                 player.setPositionY(state.position.y);
-                //player.angle = state.angle; //no angle in player
+                player.setAngle(state.angle); //no angle in player
             } else {
-                player = new Player(state.position.x,state.position.y,"player1.png");
+                player = new Player(state.position.x,state.position.y,"player1.png", state.angle);
                 players.put(key, player);
             }
         }
@@ -249,17 +236,18 @@ public class PlayState extends GameState implements PacketProvider {
     @Override
     public Packet getPacket() {
         Packet packet = new Packet(new Vector2(player1.getPositionX(), player1.getPositionY()),
-        angle,
+        player1.getAngle(),
         playerID);
         return packet;
     }
     
     public void setServer(String server) {
-        this.server = server;
-        client = new Client(server, Server.PORT, this);
-        
-        this.playerID = client.getSetupPacket().playerID;
-        
+
+            this.server = server;
+            client = new Client(server, Server.PORT, this);
+
+            this.playerID = client.getSetupPacket().playerID;
+
     }
     
 }

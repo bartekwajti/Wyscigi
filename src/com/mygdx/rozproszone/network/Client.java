@@ -49,12 +49,12 @@ public class Client {
     ObjectOutputStream oos = null;
     ObjectInputStream ois = null;
     InputStream is;
+
     public Client(String host, int port, PacketProvider provider) {
         this.host = host;
         this.port = port;
         this.packetProvider = provider;
-        
-        
+
         
         try { 
             socket = new Socket(host, port);

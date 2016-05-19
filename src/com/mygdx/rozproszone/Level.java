@@ -5,13 +5,10 @@
  */
 package com.mygdx.rozproszone;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.ParticleType.Point;
-import static com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Point;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;

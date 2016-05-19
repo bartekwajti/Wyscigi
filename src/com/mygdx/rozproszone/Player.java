@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Player {
     private float positionX;
     private float positionY;
-
+    private float angle;
     private double velocity;
     private double acceleration;    //przyśpieszenie samochodu
     private double deaccelerate;    //zwalnianie podczas hamowania
@@ -29,16 +29,33 @@ public class Player {
     private boolean ableToMove;
     private boolean slowedDust;
     
-    public Player(float positionX, float positionY,String carTextureName){
+    public Player(float positionX, float positionY,String carTextureName, float angle){
         this.carTexture=new Texture(carTextureName);
         this.carImage=new Sprite(this.carTexture,0,0,this.carTexture.getWidth(),this.carTexture.getHeight());
         this.positionX=positionX;
         this.positionY=positionY;
+        this.angle = angle;
         this.carImage.setPosition((float)this.positionX,(float) this.positionY);
         this.velocity=0;
         this.acceleration=10000;
         this.deaccelerate=50000;
         this.ableToMove = true;
+    }
+
+    public void setAngle(float angle){this.angle = angle;}
+    public float getAngle(){return  this.angle;}
+    public void changeAngle(float angle)
+    {
+
+        this.angle += angle;
+        if (this.angle > 360.0f)
+        {
+            this.angle  -= 360.0f;
+        }
+        else if (this.angle <0.0f)
+        {
+            this.angle += 360.0f;
+        }
     }
 
     public void setAbleToMove(boolean b){
