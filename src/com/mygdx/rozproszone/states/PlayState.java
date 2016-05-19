@@ -173,7 +173,7 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setPositionY(state.position.y);
                 player.setAngle(state.angle); //no angle in player
             } else {
-                player = new Player(state.position.x,state.position.y,"player1.png", state.angle);
+                player = new Player(state.position.x,state.position.y,"player2.png", state.angle);
                 players.put(key, player);
             }
         }

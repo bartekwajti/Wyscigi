@@ -48,7 +48,6 @@ public class ReceiverThread implements Runnable {
                     running = false;
                 else
                     messageProcessor.addPacket(packet);
-                    
             }
             
             ois.close();
