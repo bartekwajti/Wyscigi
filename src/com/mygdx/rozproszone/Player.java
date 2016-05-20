@@ -42,7 +42,10 @@ public class Player {
         this.ableToMove = true;
     }
 
-    public void setAngle(float angle){this.angle = angle;}
+    public void setAngle(float angle){
+        carImage.setRotation(angle*(-1));
+        this.angle = angle;
+    }
     public float getAngle(){return  this.angle;}
     public void changeAngle(float angle)
     {
