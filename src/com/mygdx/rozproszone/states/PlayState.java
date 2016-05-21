@@ -47,7 +47,7 @@ public class PlayState extends GameState implements PacketProvider {
     
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        player1= new Player(80,100,"player1.png",360.0f);
+        player1= new Player(150,450,"player1.png",360.0f,3,1,4);
         level=new Level("plansza.jpg");
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -160,7 +160,7 @@ public class PlayState extends GameState implements PacketProvider {
                 player1.setVelocity(0);
             }
         }
-
+        player1.checkLaps();
         client.update();
 
         ArrayList<Packet> states = client.getStates();
@@ -173,7 +173,7 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setPositionY(state.position.y);
                 player.setAngle(state.angle); //no angle in player
             } else {
-                player = new Player(state.position.x,state.position.y,"player2.png", state.angle);
+                player = new Player(state.position.x,state.position.y,"player2.png", state.angle,3,2,4);
                 players.put(key, player);
             }
         }
@@ -183,10 +183,11 @@ public class PlayState extends GameState implements PacketProvider {
     public void render(SpriteBatch batch) {
         level.startView();
         level.draw(player1);
+        level.drawPlayerLaps(player1);
         for (Map.Entry entry : players.entrySet()) {
             level.draw((Player)entry.getValue());
+            level.drawPlayerLaps((Player)entry.getValue());
         }
-
         level.updateView();
     }
 

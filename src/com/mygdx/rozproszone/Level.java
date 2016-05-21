@@ -18,7 +18,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
  *
- * @author Daniel
+ * @author Daniel && Bartek && Przemysław
  */
 public class Level {
     private SpriteBatch batch;
@@ -32,11 +32,21 @@ public class Level {
     private MapLayer layer2;
     MapObjects collisionObjects;
     MapObjects slowDustObjects;
-   
-    
+    private Texture scoreBoardTexture;
+    private Sprite scoreBoard;
+    private Texture threeTexture;
+    private Sprite three;
+    private Texture twoTexture;
+    private Sprite two;
+    private Texture oneTexture;
+    private Sprite one;
+
+
     public Level(String levelTextureName){
         float w = 1366;
         float h = 768;
+        int lapsPositionX = 250;
+        int lapsPositionY = 600;
         this.levelTexture=new Texture(levelTextureName);
         this.levelSprite=new Sprite(this.levelTexture,1366,768);
         batch = new SpriteBatch(); 
@@ -53,18 +63,31 @@ public class Level {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
         collisionObjects= map.getLayers().get("Collision").getObjects();
         slowDustObjects= map.getLayers().get("SlowDust").getObjects();
-        
+        scoreBoardTexture = new Texture("ScoreBoard.jpg");
+        scoreBoard = new Sprite(scoreBoardTexture);
+        scoreBoard.setPosition(w-scoreBoardTexture.getWidth(),0);
+        threeTexture = new Texture("Three.jpg");
+        twoTexture = new Texture("Two.jpg");
+        oneTexture = new Texture("One.jpg");
+        three = new Sprite(threeTexture);
+        two = new Sprite(twoTexture);
+        one = new Sprite(oneTexture);
+        three.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
+        two.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
+        one.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
+
     }
     
     
     public void startView(){
          
        
-           cam.update();
+        cam.update();
         tiledMapRenderer.setView(cam);
-         tiledMapRenderer.render();
-          this.batch.begin();
-        
+        tiledMapRenderer.render();
+        this.batch.begin();
+        this.scoreBoard.draw(batch);
+
         //this.levelSprite.draw(batch);
        
         
@@ -72,8 +95,33 @@ public class Level {
     
     public void draw(Player player){
         player.getCarImage().draw(batch);
-       
+    }
+    public void drawPlayerLaps(Player player){
+        int id = player.getID();
+        int laps = player.getLaps();
+        switch (laps){
+            case 3:
+                this.three.draw(batch);
+                break;
+            case 2:
+                this.two.draw(batch);
+                break;
+            case 1:
+                this.one.draw(batch);
+                break;
+            case 0:
 
+                break;
+        }
+
+        if (player.getLaps() == 3)
+        {
+
+        }
+        else if (player.getLaps() == 2)
+        {
+
+        }
     }
         
     public void updateView(){

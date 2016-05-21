@@ -21,15 +21,18 @@ public class Player {
     private double velocity;
     private double acceleration;    //przyśpieszenie samochodu
     private double deaccelerate;    //zwalnianie podczas hamowania
-    
-    
+    private int laps;
+    private int ID;
+    private boolean[] lapsCheck;
+    private int lapsCounter;
+
     private Music[] sounds;
     private Sprite carImage;
     private Texture carTexture;
     private boolean ableToMove;
     private boolean slowedDust;
     
-    public Player(float positionX, float positionY,String carTextureName, float angle){
+    public Player(float positionX, float positionY,String carTextureName, float angle, int laps, int ID, int lapsCount){
         this.carTexture=new Texture(carTextureName);
         this.carImage=new Sprite(this.carTexture,0,0,this.carTexture.getWidth(),this.carTexture.getHeight());
         this.positionX=positionX;
@@ -40,8 +43,43 @@ public class Player {
         this.acceleration=10000;
         this.deaccelerate=50000;
         this.ableToMove = true;
+        this.laps = laps;
+        this.ID = ID;
+        this.lapsCheck = new boolean[lapsCount];
+        this.lapsCounter = 0;
+        for (int i =0;i<lapsCount;i++){
+            lapsCheck[i] = false;
+        }
+        lapsCheck[lapsCounter] = true;
     }
 
+    public void checkLaps(){
+        if (lapsCheck[0] && positionX>=720)
+        {
+            lapsCheck[lapsCounter] = false;
+            lapsCounter++;
+            lapsCheck[lapsCounter] = true;
+        }
+        else if (lapsCheck[1] && positionY<=336)
+        {
+            lapsCheck[lapsCounter] = false;
+            lapsCounter++;
+            lapsCheck[lapsCounter] = true;
+        }
+        else if (lapsCheck[2] && positionX<=272)
+        {
+            lapsCheck[lapsCounter] = false;
+            lapsCounter++;
+            lapsCheck[lapsCounter] = true;
+        }
+        else if (lapsCheck[3] && positionX>=320 && positionY >=496)
+        {
+            lapsCheck[lapsCounter] = false;
+            lapsCounter = 0;
+            lapsCheck[lapsCounter] = true;
+            this.laps--;
+        }
+    }
     public void setAngle(float angle){
         carImage.setRotation(angle*(-1));
         this.angle = angle;
@@ -148,7 +186,7 @@ public class Player {
        positionY+=velocity;
        this.carImage.setPosition(this.positionX,this.positionY);
     }
-    
+    public int getLaps(){return this.laps;}
     public void noAccelerateAction(float time){
        if(this.velocity>-5 && this.velocity<5){
            this.velocity=0;
@@ -161,5 +199,5 @@ public class Player {
        this.carImage.setPosition(this.positionX,this.positionY);
     }
 
-    
+    public int getID(){ return this.ID;}
 }

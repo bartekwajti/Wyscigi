@@ -63,7 +63,6 @@ public class GameLobbyState extends GameState {
                 gsm.set(new ServerClientState(gsm));
                 dispose();
             }
-
         }
     }
 
