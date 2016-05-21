@@ -16,11 +16,13 @@ public class Packet implements Serializable {
     public Vector2 position;
     public float angle;
     public int playerID;
+    public int lapsCount;
     
-    public Packet(Vector2 position, float angle, int id) {
+    public Packet(Vector2 position, float angle, int id, int lapsCount) {
         this.position = position;
         this.angle = angle;
         this.playerID = id;
+        this.lapsCount = lapsCount;
     }
     
     

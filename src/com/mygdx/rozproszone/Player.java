@@ -52,7 +52,10 @@ public class Player {
         }
         lapsCheck[lapsCounter] = true;
     }
-
+    public void setLaps(int laps)
+    {
+        this.laps = laps;
+    }
     public void checkLaps(){
         if (lapsCheck[0] && positionX>=720)
         {

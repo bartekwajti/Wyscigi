@@ -40,13 +40,17 @@ public class Level {
     private Sprite two;
     private Texture oneTexture;
     private Sprite one;
+    float w;
+    float h;
+    int lapsPositionX;
+    int lapsPositionY;
 
 
     public Level(String levelTextureName){
-        float w = 1366;
-        float h = 768;
-        int lapsPositionX = 250;
-        int lapsPositionY = 600;
+        this.w = 1366;
+        this.h = 768;
+        this.lapsPositionX = 250;
+        this.lapsPositionY = 600;
         this.levelTexture=new Texture(levelTextureName);
         this.levelSprite=new Sprite(this.levelTexture,1366,768);
         batch = new SpriteBatch(); 
@@ -96,17 +100,20 @@ public class Level {
     public void draw(Player player){
         player.getCarImage().draw(batch);
     }
-    public void drawPlayerLaps(Player player){
+    public void drawPlayerLaps(Player player, int displacement){
         int id = player.getID();
         int laps = player.getLaps();
         switch (laps){
             case 3:
+                three.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY -(displacement*30));
                 this.three.draw(batch);
                 break;
             case 2:
+                two.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
                 this.two.draw(batch);
                 break;
             case 1:
+                one.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
                 this.one.draw(batch);
                 break;
             case 0:

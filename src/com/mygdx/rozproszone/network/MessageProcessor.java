@@ -42,7 +42,7 @@ public class MessageProcessor implements Runnable {
             //send configuration packet to client
             Packet setupPacket = new Packet(new Vector2(100,100),
                                             0.0f,
-                                            streams.size()-1);
+                                            streams.size()-1, 0);
             oos.writeObject(setupPacket);
         } catch (IOException ex) {
             Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,7 +64,7 @@ public class MessageProcessor implements Runnable {
             synchronized(packets) {
                 for(Packet packet : packets) {
                     for(int i = 0; i < clients.size(); ++i) {
-                        System.out.println(packet.playerID + " [" + packet.position.x + ", " + packet.position.y + "] " + packet.angle );
+                        System.out.println(packet.playerID + " [" + packet.position.x + ", " + packet.position.y + "] " + packet.angle  + " " + packet.lapsCount);
                         if(i != packet.playerID) {
                             try {
                                 streams.get(i).writeObject(packet);

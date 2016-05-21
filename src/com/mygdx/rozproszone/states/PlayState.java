@@ -62,8 +62,8 @@ public class PlayState extends GameState implements PacketProvider {
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
             velocityFlag = true;
-            newX = new Float (Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
-            newY = new Float (Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
+            newX = (float) (Math.sin(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
+            newY = (float) (Math.cos(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
             checkCollision(newX,newY);
             checkSlowDust(newX,newY);
             
@@ -80,15 +80,15 @@ public class PlayState extends GameState implements PacketProvider {
             }
             if(player1.getVelocity() < 300) player1.changeVelocity(10);
             
-            if(player1.getVelocity()> 150)angleDelta = new Float (600/player1.getVelocity());
+            if(player1.getVelocity()> 150)angleDelta = (float) (600 / player1.getVelocity());
         }
         
         
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
             velocityFlag = false;
-            newX = new Float (-Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
-            newY = new Float (-Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
+            newX = (float) (-Math.sin(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
+            newY = (float) (-Math.cos(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
             checkCollision(newX,newY);
             checkSlowDust(newX,newY);
             
@@ -171,9 +171,10 @@ public class PlayState extends GameState implements PacketProvider {
                 player = players.get(key);
                 player.setPositionX(state.position.x);
                 player.setPositionY(state.position.y);
-                player.setAngle(state.angle); //no angle in player
+                player.setAngle(state.angle);
+                player.setLaps(state.lapsCount);//no angle in player
             } else {
-                player = new Player(state.position.x,state.position.y,"player2.png", state.angle,3,2,4);
+                player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2,4);
                 players.put(key, player);
             }
         }
@@ -181,12 +182,15 @@ public class PlayState extends GameState implements PacketProvider {
 
     @Override
     public void render(SpriteBatch batch) {
+        int i = 0;
         level.startView();
         level.draw(player1);
-        level.drawPlayerLaps(player1);
+        level.drawPlayerLaps(player1, i);
+        i++;
         for (Map.Entry entry : players.entrySet()) {
             level.draw((Player)entry.getValue());
-            level.drawPlayerLaps((Player)entry.getValue());
+            level.drawPlayerLaps((Player)entry.getValue(), i);
+            i++;
         }
         level.updateView();
     }
@@ -238,7 +242,7 @@ public class PlayState extends GameState implements PacketProvider {
     public Packet getPacket() {
         Packet packet = new Packet(new Vector2(player1.getPositionX(), player1.getPositionY()),
         player1.getAngle(),
-        playerID);
+        playerID, player1.getLaps());
         return packet;
     }
     
