@@ -66,7 +66,7 @@ public class ServerClientState extends GameState {
                 th.start();
 
 
-                GameLobbyState lobbyState = new GameLobbyState(gsm,3);
+                GameLobbyState lobbyState = new GameLobbyState(gsm,3,"localhost");
                 gsm.set(lobbyState);
                 dispose();
                 //server.stop();
