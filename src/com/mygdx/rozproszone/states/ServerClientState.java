@@ -5,7 +5,6 @@
  */
 package com.mygdx.rozproszone.states;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -66,7 +65,7 @@ public class ServerClientState extends GameState {
                 th.start();
 
 
-                GameLobbyState lobbyState = new GameLobbyState(gsm,3,"localhost");
+                HostLobbyState lobbyState = new HostLobbyState(gsm,3,"localhost");
                 gsm.set(lobbyState);
                 dispose();
                 //server.stop();
@@ -77,7 +76,7 @@ public class ServerClientState extends GameState {
             }
             else if(selectedOption == 1) {
                 // join server
-                gsm.set(new JoinServerState(gsm));
+                gsm.set(new JoinServerState(gsm,"localhost"));
                 dispose();
             }
             else if(selectedOption == 2){

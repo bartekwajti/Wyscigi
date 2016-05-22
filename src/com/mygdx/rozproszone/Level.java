@@ -18,7 +18,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
  *
- * @author Daniel && Bartek && Przemysław
+ * @author Daniel && Bartlomiej && Przemysław
  */
 public class Level {
     private SpriteBatch batch;

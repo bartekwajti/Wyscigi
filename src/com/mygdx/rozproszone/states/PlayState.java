@@ -33,7 +33,7 @@ public class PlayState extends GameState implements PacketProvider {
 
     private Player player1;
     private Level level;
-    
+    private int hostLaps;
     String server;
     private int playerID = 0;
     Client client;
@@ -47,7 +47,6 @@ public class PlayState extends GameState implements PacketProvider {
     
     public PlayState(GameStateManager gsm, int lapsCounter) {
         super(gsm);
-        player1= new Player(150,450,"player1.png",360.0f,lapsCounter,1);
         level=new Level("plansza.jpg");
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -175,14 +174,14 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setAngle(state.angle);
                 player.setLaps(state.lapsCount);//no angle in player
             } else {
-                switch (pngCounter) {
-                    case 0:
+                switch (state.playerID) {
+                    case 1:
                         player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2);
                         break;
-                    case 1:
+                    case 2:
                         player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2);
                         break;
-                    case 2:
+                    case 3:
                         player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,2);
                         break;
                     default:
@@ -267,7 +266,24 @@ public class PlayState extends GameState implements PacketProvider {
             client = new Client(server, Server.PORT, this);
 
             this.playerID = client.getSetupPacket().playerID;
-
+            switch (this.playerID)
+            {
+                case 0:
+                    player1= new Player(150,450,"player1.png",360.0f,hostLaps,1);
+                    break;
+                case 1:
+                    player1= new Player(150,450,"player2.png",360.0f,hostLaps,1);
+                    break;
+                case 2:
+                    player1= new Player(150,450,"player3.png",360.0f,hostLaps,1);
+                    break;
+                case 3:
+                    player1= new Player(150,450,"player4.png",360.0f,hostLaps,1);
+                    break;
+            }
+    }
+    public void setLaps(int laps){
+        this.hostLaps = laps;
     }
     
 }

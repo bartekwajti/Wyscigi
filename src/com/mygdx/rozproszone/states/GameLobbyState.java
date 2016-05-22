@@ -8,29 +8,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
-import com.mygdx.rozproszone.network.Server;
 
 /**
- * Created by Przemysław on 2016-05-19.
+ * Created by Przemysław on 2016-05-22.
  */
 public class GameLobbyState extends GameState {
-
     private BitmapFont font;
     private int lapsCounter;
     private String ip;
     private int selectedOption;
     private String[] options = {
-            "Start Game",
-            "Options",
             "Back"
     };
 
 
-    protected GameLobbyState(GameStateManager gsm, int lapsCounter, String ip) {
+    protected GameLobbyState(GameStateManager gsm, String ip) {
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
-        this.lapsCounter = lapsCounter;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
@@ -54,20 +49,18 @@ public class GameLobbyState extends GameState {
 
             if(selectedOption == 0) {
 
-                PlayState playState = new PlayState(gsm, lapsCounter);
+                // join server
+                gsm.set(new JoinServerState(gsm,ip));
+                dispose();
+
+                /*PlayState playState = new PlayState(gsm, lapsCounter);
+                playState.setLaps(lapsCounter);
                 playState.setServer(ip);
-                gsm.set(playState);
+                gsm.set(playState);*/
 //                dispose();
             }
-            else if (selectedOption == 1){
-                gsm.set(new OptionsLobbyState(gsm,ip));
-            }
-            else if(selectedOption == 2) {
-                // join server
-                gsm.set(new ServerClientState(gsm));
-                dispose();
-            }
         }
+
     }
 
     @Override

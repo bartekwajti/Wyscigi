@@ -1,52 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mygdx.rozproszone.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
+import com.mygdx.rozproszone.network.Server;
 
 /**
- *
- * @author Admin
+ * Created by Przemysław on 2016-05-19.
  */
-public class JoinServerState extends GameState implements TextInputListener {
-    
-    BitmapFont font;
-    private TextField ipInput;
-    private Skin skin;
-    private String ip = "localhost";
+public class HostLobbyState extends GameState {
+
+    private BitmapFont font;
+    private int lapsCounter;
+    private String ip;
     private int selectedOption;
     private String[] options = {
-            "Enter server IP",
-            "Join game",
+            "Start Game",
+            "Options",
             "Back"
     };
-    
-    public JoinServerState(GameStateManager gsm, String ip) {
+
+
+    protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip) {
         super(gsm);
         this.ip = ip;
-        this.selectedOption = 0;
+        selectedOption = 0;
+        this.lapsCounter = lapsCounter;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
-        //parameter.color = Color.GREEN;
         font = generator.generateFont(parameter);
-        
+
         generator.dispose();
-        //ipInput.setDisabled(false);
-        //Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -59,27 +49,25 @@ public class JoinServerState extends GameState implements TextInputListener {
             if(selectedOption > 0)
                 --selectedOption;
         }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if (selectedOption == 0) {
-                //start server
-                Gdx.input.getTextInput(this,"Enter adress IP","localhost","");
-//                dispose();
-            } else if (selectedOption == 1) {
-                // join server
-                GameLobbyState lobbyState = new GameLobbyState(gsm,ip);
 
-                gsm.set(lobbyState);
-
-                /*PlayState playState = new PlayState(gsm);
+            if(selectedOption == 0) {
+                PlayState playState = new PlayState(gsm, lapsCounter);
+                playState.setLaps(lapsCounter);
                 playState.setServer(ip);
-                gsm.set(playState);*/
-                dispose();
-            } else if (selectedOption == 2) {
+                gsm.set(playState);
+//                dispose();
+            }
+            else if (selectedOption == 1){
+                gsm.set(new OptionsLobbyState(gsm,ip));
+            }
+            else if(selectedOption == 2) {
+                // join server
                 gsm.set(new ServerClientState(gsm));
                 dispose();
             }
         }
-               
     }
 
     @Override
@@ -90,9 +78,8 @@ public class JoinServerState extends GameState implements TextInputListener {
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
-
         font.setColor(Color.GREEN);
-        font.draw(batch, "IP: " + ip, Game.WIDTH/2-200, Game.HEIGHT-50-font.getLineHeight());
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-80);
 
         for(int i = 0; i < options.length; ++i) {
             if(i == selectedOption)
@@ -103,24 +90,11 @@ public class JoinServerState extends GameState implements TextInputListener {
             font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
         }
 
-        //font.draw(batch, "Press ENTER to type, S to start", Game.WIDTH/2-200, Game.HEIGHT-100-font.getLineHeight());
-
-        
         batch.end();
     }
 
     @Override
     public void dispose() {
+        font.dispose();
     }
-
-    @Override
-    public void input(String string) {
-        ip = string;
-    }
-
-    @Override
-    public void canceled() {
-        ip = "localhost";
-    }
-    
 }

@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.utils.NumberUtils;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
-import com.sun.deploy.util.StringUtils;
 
 /**
  * Created by Przemysław on 2016-05-22.
@@ -57,7 +55,7 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
                 Gdx.input.getTextInput(this,"Enter number of Laps",Integer.toString(lapsCount),"");
             }
             else if(selectedOption == 1) {
-                gsm.set(new GameLobbyState(gsm, this.lapsCount, ip));
+                gsm.set(new HostLobbyState(gsm, this.lapsCount, ip));
                 dispose();
             }
         }
