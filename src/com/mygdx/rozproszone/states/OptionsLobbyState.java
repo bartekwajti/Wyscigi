@@ -17,6 +17,7 @@ import com.sun.deploy.util.StringUtils;
 public class OptionsLobbyState extends GameState implements Input.TextInputListener{
 
     private BitmapFont font;
+    private String ip;
     private int lapsCount;
     private int selectedOption;
     private String[] options = {
@@ -25,10 +26,10 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
     };
 
 
-    protected OptionsLobbyState(GameStateManager gsm) {
+    protected OptionsLobbyState(GameStateManager gsm, String ip) {
 
         super(gsm);
-
+        this.ip = ip;
         selectedOption = 0;
         this.lapsCount = 3;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
@@ -56,7 +57,7 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
                 Gdx.input.getTextInput(this,"Enter number of Laps",Integer.toString(lapsCount),"");
             }
             else if(selectedOption == 1) {
-                gsm.set(new GameLobbyState(gsm, this.lapsCount));
+                gsm.set(new GameLobbyState(gsm, this.lapsCount, ip));
                 dispose();
             }
         }
