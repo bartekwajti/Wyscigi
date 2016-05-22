@@ -41,7 +41,7 @@ public class PlayState extends GameState implements PacketProvider {
     private Float angleDelta = 5.0f;
     private Float newX;
     private Float newY;
-    boolean velocityFlag = false;
+    private boolean velocityFlag = false;
 
     private HashMap<Integer, Player> players = new HashMap<>();
     
@@ -114,8 +114,8 @@ public class PlayState extends GameState implements PacketProvider {
             if (player1.getAbleToMove()) {
                 
                 if (velocityFlag) {
-                    newX = new Float (Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
-                    newY = new Float (Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt);
+                    newX = (float) (Math.sin(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
+                    newY = (float) (Math.cos(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
                     player1.changeVelocity(-10);
                     checkCollision(newX,newY);
                     
@@ -137,8 +137,8 @@ public class PlayState extends GameState implements PacketProvider {
                 }
                 else{
                     player1.changeVelocity(-5);
-                    newX = new Float((-Math.sin(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt));
-                    newY = new Float((-Math.cos(player1.getAngle()*Math.PI/180)*player1.getVelocity()*dt));
+                    newX = (float) (-Math.sin(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
+                    newY = (float) (-Math.cos(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
                     checkCollision(newX,newY);
                     checkSlowDust(newX,newY);
                     
@@ -215,7 +215,7 @@ public class PlayState extends GameState implements PacketProvider {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    void checkCollision(Float x, Float y){
+    private void checkCollision(Float x, Float y){
         for (int i = 0; i < level.getCollisionObjects().getCount(); i++) {
             RectangleMapObject obj = (RectangleMapObject) level.getCollisionObjects().get(i);
             Rectangle rect = obj.getRectangle();
@@ -232,7 +232,7 @@ public class PlayState extends GameState implements PacketProvider {
         }
     }
     
-    void checkSlowDust(Float x, Float y){
+    private void checkSlowDust(Float x, Float y){
         for (int i = 0; i < level.getSlowDustObjects().getCount(); i++) {
             RectangleMapObject obj = (RectangleMapObject) level.getSlowDustObjects().get(i);
             Rectangle rect = obj.getRectangle();
