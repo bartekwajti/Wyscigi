@@ -16,23 +16,23 @@ import com.mygdx.rozproszone.network.Server;
 public class GameLobbyState extends GameState {
 
     private BitmapFont font;
-
+    private int lapsCounter;
     private int selectedOption;
     private String[] options = {
             "Start Game",
+            "Options",
             "Back"
     };
 
 
-    protected GameLobbyState(GameStateManager gsm) {
+    protected GameLobbyState(GameStateManager gsm, int lapsCounter) {
         super(gsm);
 
         selectedOption = 0;
-
+        this.lapsCounter = lapsCounter;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
-        //parameter.color = Color.GREEN;
         font = generator.generateFont(parameter);
 
         generator.dispose();
@@ -53,12 +53,15 @@ public class GameLobbyState extends GameState {
 
             if(selectedOption == 0) {
 
-                PlayState playState = new PlayState(gsm);
+                PlayState playState = new PlayState(gsm, lapsCounter);
                 playState.setServer("localhost");
                 gsm.set(playState);
 //                dispose();
             }
-            else if(selectedOption == 1) {
+            else if (selectedOption == 1){
+                gsm.set(new OptionsLobbyState(gsm));
+            }
+            else if(selectedOption == 2) {
                 // join server
                 gsm.set(new ServerClientState(gsm));
                 dispose();
@@ -89,6 +92,6 @@ public class GameLobbyState extends GameState {
 
     @Override
     public void dispose() {
-
+        font.dispose();
     }
 }

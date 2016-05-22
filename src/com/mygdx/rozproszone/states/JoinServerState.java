@@ -78,7 +78,7 @@ public class JoinServerState extends GameState implements TextInputListener {
 //                dispose();
             } else if (selectedOption == 1) {
                 // join server
-                GameLobbyState lobbyState = new GameLobbyState(gsm);
+                GameLobbyState lobbyState = new GameLobbyState(gsm,3);
 
                 gsm.set(lobbyState);
 

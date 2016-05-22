@@ -32,7 +32,7 @@ public class Player {
     private boolean ableToMove;
     private boolean slowedDust;
     
-    public Player(float positionX, float positionY,String carTextureName, float angle, int laps, int ID, int lapsCount){
+    public Player(float positionX, float positionY,String carTextureName, float angle, int laps, int ID){
         this.carTexture=new Texture(carTextureName);
         this.carImage=new Sprite(this.carTexture,0,0,this.carTexture.getWidth(),this.carTexture.getHeight());
         this.positionX=positionX;
@@ -45,9 +45,9 @@ public class Player {
         this.ableToMove = true;
         this.laps = laps;
         this.ID = ID;
-        this.lapsCheck = new boolean[lapsCount];
+        this.lapsCheck = new boolean[4];
         this.lapsCounter = 0;
-        for (int i =0;i<lapsCount;i++){
+        for (int i =0;i<4;i++){
             lapsCheck[i] = false;
         }
         lapsCheck[lapsCounter] = true;

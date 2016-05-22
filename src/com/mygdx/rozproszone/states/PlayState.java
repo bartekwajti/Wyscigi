@@ -45,9 +45,9 @@ public class PlayState extends GameState implements PacketProvider {
 
     private HashMap<Integer, Player> players = new HashMap<>();
     
-    public PlayState(GameStateManager gsm) {
+    public PlayState(GameStateManager gsm, int lapsCounter) {
         super(gsm);
-        player1= new Player(150,450,"player1.png",360.0f,3,1,4);
+        player1= new Player(150,450,"player1.png",360.0f,lapsCounter,1);
         level=new Level("plansza.jpg");
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -177,16 +177,16 @@ public class PlayState extends GameState implements PacketProvider {
             } else {
                 switch (pngCounter) {
                     case 0:
-                        player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2,4);
+                        player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2);
                         break;
                     case 1:
-                        player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2,4);
+                        player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2);
                         break;
                     case 2:
-                        player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,2,4);
+                        player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,2);
                         break;
                     default:
-                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,2,4);
+                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,2);
                         break;
                 }
                 players.put(key, player);

@@ -34,12 +34,9 @@ public class Level {
     MapObjects slowDustObjects;
     private Texture scoreBoardTexture;
     private Sprite scoreBoard;
-    private Texture threeTexture;
-    private Sprite three;
-    private Texture twoTexture;
-    private Sprite two;
-    private Texture oneTexture;
-    private Sprite one;
+
+    private Texture textureNumbers[];
+    private Sprite  spriteNumbers[];
     float w;
     float h;
     int lapsPositionX;
@@ -47,6 +44,18 @@ public class Level {
 
 
     public Level(String levelTextureName){
+        String[] numberFileNames ={
+                "One.jpg",
+                "Two.jpg",
+                "Three.jpg",
+                "Four.jpg",
+                "Five.jpg",
+                "Six.jpg",
+                "Seven.jpg",
+                "Eight.jpg",
+                "Nine.jpg",
+                "MoreThanNine.jpg"
+        };
         this.w = 1366;
         this.h = 768;
         this.lapsPositionX = 250;
@@ -70,16 +79,14 @@ public class Level {
         scoreBoardTexture = new Texture("ScoreBoard.jpg");
         scoreBoard = new Sprite(scoreBoardTexture);
         scoreBoard.setPosition(w-scoreBoardTexture.getWidth(),0);
-        threeTexture = new Texture("Three.jpg");
-        twoTexture = new Texture("Two.jpg");
-        oneTexture = new Texture("One.jpg");
-        three = new Sprite(threeTexture);
-        two = new Sprite(twoTexture);
-        one = new Sprite(oneTexture);
-        three.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
-        two.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
-        one.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
-
+        textureNumbers = new Texture[10];
+        spriteNumbers = new Sprite[10];
+        for (int i =0;i<10;i++)
+        {
+            textureNumbers[i] = new Texture(numberFileNames[i]);
+            spriteNumbers[i] = new Sprite(textureNumbers[i]);
+            spriteNumbers[i].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY);
+        }
     }
     
     
@@ -104,30 +111,49 @@ public class Level {
         int id = player.getID();
         int laps = player.getLaps();
         switch (laps){
+            case 9:
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
+                break;
+            case 8:
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
+                break;
+            case 7:
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
+                break;
+            case 6:
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
+                break;
+            case 5:
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
+                break;
+            case 4:
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
+                break;
             case 3:
-                three.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY -(displacement*30));
-                this.three.draw(batch);
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
                 break;
             case 2:
-                two.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                this.two.draw(batch);
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
                 break;
             case 1:
-                one.setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                this.one.draw(batch);
+                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[laps-1].draw(batch);
                 break;
             case 0:
 
                 break;
-        }
-
-        if (player.getLaps() == 3)
-        {
-
-        }
-        else if (player.getLaps() == 2)
-        {
-
+            default:
+                spriteNumbers[9].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
+                spriteNumbers[9].draw(batch);
+                break;
         }
     }
         
