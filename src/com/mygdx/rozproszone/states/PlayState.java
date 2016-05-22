@@ -164,6 +164,7 @@ public class PlayState extends GameState implements PacketProvider {
         client.update();
 
         ArrayList<Packet> states = client.getStates();
+        int pngCounter = 0;
         for(Packet state : states) {
             Integer key = state.playerID;
             Player player;
@@ -174,9 +175,23 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setAngle(state.angle);
                 player.setLaps(state.lapsCount);//no angle in player
             } else {
-                player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2,4);
+                switch (pngCounter) {
+                    case 0:
+                        player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2,4);
+                        break;
+                    case 1:
+                        player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2,4);
+                        break;
+                    case 2:
+                        player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,2,4);
+                        break;
+                    default:
+                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,2,4);
+                        break;
+                }
                 players.put(key, player);
             }
+            pngCounter++;
         }
     }
 
