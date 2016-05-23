@@ -17,13 +17,12 @@ import com.mygdx.rozproszone.Level;
 import com.mygdx.rozproszone.Player;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Client.PacketProvider;
-import com.mygdx.rozproszone.network.Packet;
+import com.mygdx.rozproszone.network.GamePacket;
 import com.mygdx.rozproszone.network.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -162,9 +161,9 @@ public class PlayState extends GameState implements PacketProvider {
         player1.checkLaps();
         client.update();
 
-        ArrayList<Packet> states = client.getStates();
+        ArrayList<GamePacket> states = client.getStates();
         int pngCounter = 0;
-        for(Packet state : states) {
+        for(GamePacket state : states) {
             Integer key = state.playerID;
             Player player;
             if (players.containsKey(key)) {
@@ -253,11 +252,11 @@ public class PlayState extends GameState implements PacketProvider {
     }
 
     @Override
-    public Packet getPacket() {
-        Packet packet = new Packet(new Vector2(player1.getPositionX(), player1.getPositionY()),
+    public GamePacket getPacket() {
+        GamePacket gamePacket = new GamePacket(new Vector2(player1.getPositionX(), player1.getPositionY()),
         player1.getAngle(),
         playerID, player1.getLaps());
-        return packet;
+        return gamePacket;
     }
     
     public void setServer(String server) {
@@ -265,7 +264,7 @@ public class PlayState extends GameState implements PacketProvider {
             this.server = server;
             client = new Client(server, Server.PORT, this);
 
-            this.playerID = client.getSetupPacket().playerID;
+            this.playerID = client.getSetupGamePacket().playerID;
             switch (this.playerID)
             {
                 case 0:

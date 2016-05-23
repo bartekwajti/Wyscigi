@@ -19,15 +19,31 @@ public class ClientReceiverThread implements Runnable {
     @Override
     public void run() {
         try {
+            Packet receivedPacket = null;
             while(running){
-                Packet packet = null;
 
-                    packet = (Packet)ois.readObject();
+                receivedPacket = (Packet)ois.readObject();
+                String packetType = receivedPacket.getPacketName();
 
-                if(packet == null)
-                    running = false;
-                else
-                    client.updateState(packet);
+                if(packetType.equals(PacketsConstants.GAME_PACKET)) {
+                    GamePacket gamePacket = (GamePacket)receivedPacket;
+                    client.updateState(gamePacket);
+                }
+                else if(packetType.equals(PacketsConstants.LOBBY_PACKET)) {
+                    LobbyPacket lobbyPacket = (LobbyPacket)receivedPacket;
+
+                }
+                else if(packetType.equals(PacketsConstants.COMMAND_PACKET)) {
+                    CommandPacket commandPacket = (CommandPacket)receivedPacket;
+                    if(commandPacket.command.equals("serverClosing")) {
+                        client.diconnect();
+                    }
+                }
+
+//                if(gamePacket == null)
+//                    running = false;
+//                else
+//                    client.updateState(gamePacket);
             }
         } catch (IOException e) {
             e.printStackTrace();

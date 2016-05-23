@@ -5,11 +5,9 @@
  */
 package com.mygdx.rozproszone.network;
 
-import com.badlogic.gdx.math.Vector2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,22 +34,30 @@ public class ReceiverThread implements Runnable {
     public void run() {
 
         try (InputStream is = socket.getInputStream();
-                
-                ObjectInputStream ois = new ObjectInputStream(is);
-                ) {
-           //ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-           
-            
+                ObjectInputStream ois = new ObjectInputStream(is))
+        {
+            Packet receivedPacket;
             while(running){
-                Packet packet = (Packet)ois.readObject();
-                if(packet == null)
-                    running = false;
-                else
-                    messageProcessor.addPacket(packet);
+
+
+
+                receivedPacket = (Packet)ois.readObject();
+                String packetType = receivedPacket.getPacketName();
+
+                if(packetType.equals(PacketsConstants.GAME_PACKET)) {
+                    GamePacket gamePacket = (GamePacket)receivedPacket;
+                    messageProcessor.addPacket(gamePacket);
+                }
+                else if(packetType.equals(PacketsConstants.LOBBY_PACKET)) {
+                    LobbyPacket lobbyPacket = (LobbyPacket)receivedPacket;
+
+                }
+
+
             }
-            
+
             ois.close();
-            
+
         } catch (IOException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
         } catch (ClassNotFoundException ex) {

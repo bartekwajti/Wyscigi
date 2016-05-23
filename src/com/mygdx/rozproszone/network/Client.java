@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class Client {
     
     public interface PacketProvider {
-        Packet getPacket();
+        GamePacket getPacket();
     }
     
     PacketProvider packetProvider;
@@ -40,9 +40,9 @@ public class Client {
     
     private int clientID;
     
-    private Packet setupPacket;
+    private GamePacket setupGamePacket;
 
-    private HashMap<Integer, Packet> playersStates = new HashMap();
+    private HashMap<Integer, GamePacket> playersStates = new HashMap();
 
     public boolean running = true;
     
@@ -68,7 +68,7 @@ public class Client {
         }
         
         try {
-            setupPacket = (Packet)ois.readObject();
+            setupGamePacket = (GamePacket)ois.readObject();
             //ois.close();
             //socket.shutdownInput();
         } catch (IOException ex) {
@@ -93,12 +93,12 @@ public class Client {
     
     
     public void update() {
-        Packet packet = packetProvider.getPacket();
+        GamePacket gamePacket = packetProvider.getPacket();
         try {
-            if(packet == null)
+            if(gamePacket == null)
                 running = false;
             else {
-                oos.writeObject(packet);
+                oos.writeObject(gamePacket);
             }
         }
         catch (IOException ex) {
@@ -116,31 +116,40 @@ public class Client {
         
     }
     
-    public Packet getSetupPacket() {
-        return setupPacket;
+    public GamePacket getSetupGamePacket() {
+        return setupGamePacket;
     }
 
-    public void updateState(Packet packet) {
+    public void updateState(GamePacket gamePacket) {
         synchronized (playersStates) {
-            Integer key = packet.playerID;
+            Integer key = gamePacket.playerID;
             if(playersStates.containsKey(key)) {
-                playersStates.replace(key, packet);
+                playersStates.replace(key, gamePacket);
             }
             else {
-                playersStates.put(key, packet);
+                playersStates.put(key, gamePacket);
             }
         }
     }
 
-    public ArrayList<Packet> getStates() {
-        ArrayList<Packet> states = new ArrayList<>(5);
+    public ArrayList<GamePacket> getStates() {
+        ArrayList<GamePacket> states = new ArrayList<>(5);
         synchronized (playersStates) {
             Iterator it = playersStates.entrySet().iterator();
             while(it.hasNext()) {
-                Packet packet = (Packet)(((Map.Entry)it.next()).getValue());
-                states.add(packet);
+                GamePacket gamePacket = (GamePacket)(((Map.Entry)it.next()).getValue());
+                states.add(gamePacket);
             }
         }
         return states;
+    }
+
+
+    public void diconnect() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

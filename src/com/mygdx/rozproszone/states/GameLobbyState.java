@@ -71,6 +71,8 @@ public class GameLobbyState extends GameState {
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
+        font.setColor(Color.GREEN);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-80);
 
         for(int i = 0; i < options.length; ++i) {
             if(i == selectedOption)
