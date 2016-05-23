@@ -17,6 +17,7 @@ public class GameLobbyState extends GameState {
     private int lapsCounter;
     private String ip;
     private int selectedOption;
+    private boolean isStarting;
     private String[] options = {
             "Back"
     };
@@ -26,6 +27,8 @@ public class GameLobbyState extends GameState {
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
+        this.isStarting = false;
+        this.lapsCounter = 3;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
@@ -53,12 +56,23 @@ public class GameLobbyState extends GameState {
                 gsm.set(new JoinServerState(gsm,ip));
                 dispose();
 
-                /*PlayState playState = new PlayState(gsm, lapsCounter);
-                playState.setLaps(lapsCounter);
-                playState.setServer(ip);
-                gsm.set(playState);*/
+                /*P*/
 //                dispose();
             }
+        }
+        /*
+            lapsCounter = LobbyPacket.laps;
+            isStarting = LobbyPacket.isStarting;
+
+        */
+
+        isStarting = true;
+        if (isStarting)
+        {
+            PlayState playState = new PlayState(gsm, lapsCounter);
+            playState.setLaps(lapsCounter);
+            playState.setServer(ip);
+            gsm.set(playState);
         }
 
     }
