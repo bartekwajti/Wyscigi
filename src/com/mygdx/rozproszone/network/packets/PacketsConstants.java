@@ -10,4 +10,7 @@ public final class PacketsConstants {
 
     public static final String CMD_DISCONNECT = "disconnect";
     public static final String CMD_PLAYER_DISCONNECTED = "playerDisconnected";
+    public static final String CMD_START_GAME = "startGame";
+
+    public static final String INFO_GAME_STARTED = "gameStarted";
 }

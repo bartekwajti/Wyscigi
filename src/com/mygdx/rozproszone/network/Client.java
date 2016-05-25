@@ -34,9 +34,15 @@ public class Client {
         void onPlayerDisconnected(Integer key);
     }
 
+    public interface LobbyListener {
+        void onGameStart();
+    }
+
     ClientReceiverThread clientReceiver;
 
     PacketProvider packetProvider;
+    LobbyListener lobbyListener;
+
     public static final String SEPARATOR = ":";
     private static final Logger log = Logger.getLogger(Client.class.getName());
     
@@ -57,10 +63,10 @@ public class Client {
     ObjectInputStream ois = null;
     InputStream is;
 
-    public Client(String host, int port, PacketProvider provider) {
+    public Client(String host, int port) {
         this.host = host;
         this.port = port;
-        this.packetProvider = provider;
+        //this.packetProvider = provider;
 
         
         try { 
@@ -165,6 +171,27 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendStartGamePacket() {
+        try {
+            CommandPacket startGamePacket = new CommandPacket(PacketsConstants.CMD_START_GAME);
+            oos.writeObject(startGamePacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setLobbyListener(LobbyListener lobbyListener) {
+        this.lobbyListener = lobbyListener;
+    }
+
+    public LobbyListener getLobbyListener() {
+        return lobbyListener;
+    }
+
+    public void setPacketProvider(PacketProvider packetProvider) {
+        this.packetProvider = packetProvider;
     }
 
     public void disconnect() {

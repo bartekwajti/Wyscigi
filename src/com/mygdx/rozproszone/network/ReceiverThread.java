@@ -63,6 +63,9 @@ public class ReceiverThread implements Runnable {
                             messageProcessor.removeClient(socket, id);
                             System.out.println("Client " + id  +" disconnected");
                             break;
+                        case PacketsConstants.CMD_START_GAME:
+                            messageProcessor.addPacket(new CommandPacket(PacketsConstants.INFO_GAME_STARTED));
+                            break;
                     }
                 }
 

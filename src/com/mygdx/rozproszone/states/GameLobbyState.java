@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
+import com.mygdx.rozproszone.network.Client;
+import com.mygdx.rozproszone.network.Server;
 
 /**
  * Created by Przemysław on 2016-05-22.
  */
-public class GameLobbyState extends GameState {
+public class GameLobbyState extends GameState implements Client.LobbyListener {
     private BitmapFont font;
     private int lapsCounter;
     private String ip;
@@ -22,6 +24,7 @@ public class GameLobbyState extends GameState {
             "Back"
     };
 
+    Client client;
 
     protected GameLobbyState(GameStateManager gsm, String ip) {
         super(gsm);
@@ -35,6 +38,9 @@ public class GameLobbyState extends GameState {
         font = generator.generateFont(parameter);
 
         generator.dispose();
+
+        client =  new Client(ip, Server.PORT);
+        client.setLobbyListener(this);
     }
 
     @Override
@@ -66,12 +72,16 @@ public class GameLobbyState extends GameState {
 
         */
 
-        isStarting = true;
+        //isStarting = true;
         if (isStarting)
         {
             PlayState playState = new PlayState(gsm, lapsCounter);
             playState.setLaps(lapsCounter);
+
+            client.setPacketProvider(playState);
             playState.setServer(ip);
+            playState.setClient(client);
+
             gsm.set(playState);
         }
 
@@ -103,5 +113,10 @@ public class GameLobbyState extends GameState {
     @Override
     public void dispose() {
         font.dispose();
+    }
+
+    @Override
+    public void onGameStart() {
+        isStarting = true;
     }
 }

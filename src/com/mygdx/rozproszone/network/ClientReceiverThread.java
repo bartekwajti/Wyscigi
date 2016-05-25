@@ -44,6 +44,9 @@ public class ClientReceiverThread implements Runnable {
                         case PacketsConstants.CMD_PLAYER_DISCONNECTED:
                             client.removePlayerState(commandPacket.playerID);
                             break;
+                        case PacketsConstants.INFO_GAME_STARTED:
+                            client.getLobbyListener().onGameStart();
+                            break;
                     }
                 }
 

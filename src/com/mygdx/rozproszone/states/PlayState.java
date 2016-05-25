@@ -268,7 +268,7 @@ public class PlayState extends GameState implements PacketProvider {
     public void setServer(String server) {
 
             this.server = server;
-            client = new Client(server, Server.PORT, this);
+            /*client = new Client(server, Server.PORT, this);
 
             this.playerID = client.getSetupGamePacket().playerID;
             switch (this.playerID)
@@ -285,8 +285,29 @@ public class PlayState extends GameState implements PacketProvider {
                 case 3:
                     player1= new Player(150,450,"player4.png",360.0f,hostLaps,1);
                     break;
-            }
+            }*/
     }
+    public void setClient(Client client) {
+        this.client = client;
+
+        this.playerID = client.getSetupGamePacket().playerID;
+        switch (this.playerID)
+        {
+            case 0:
+                player1= new Player(150,450,"player1.png",360.0f,hostLaps,1);
+                break;
+            case 1:
+                player1= new Player(150,450,"player2.png",360.0f,hostLaps,1);
+                break;
+            case 2:
+                player1= new Player(150,450,"player3.png",360.0f,hostLaps,1);
+                break;
+            case 3:
+                player1= new Player(150,450,"player4.png",360.0f,hostLaps,1);
+                break;
+        }
+    }
+
     public void setLaps(int laps){
         this.hostLaps = laps;
     }

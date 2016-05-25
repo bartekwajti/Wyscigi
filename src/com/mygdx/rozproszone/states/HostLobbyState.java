@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
+import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Server;
 
 /**
@@ -25,7 +26,7 @@ public class HostLobbyState extends GameState {
             "Back"
     };
 
-
+    Client client;
     protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip) {
         super(gsm);
         this.ip = ip;
@@ -37,6 +38,8 @@ public class HostLobbyState extends GameState {
         font = generator.generateFont(parameter);
 
         generator.dispose();
+
+        client = new Client(ip, Server.PORT);
     }
 
     @Override
@@ -55,8 +58,13 @@ public class HostLobbyState extends GameState {
             if(selectedOption == 0) {
                 PlayState playState = new PlayState(gsm, lapsCounter);
                 playState.setLaps(lapsCounter);
+
+                client.setPacketProvider(playState);
                 playState.setServer(ip);
+                playState.setClient(client);
                 gsm.set(playState);
+
+                client.sendStartGamePacket();
 //                dispose();
             }
             else if (selectedOption == 1){
