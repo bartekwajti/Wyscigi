@@ -5,6 +5,11 @@
  */
 package com.mygdx.rozproszone.network;
 
+import com.mygdx.rozproszone.network.packets.GamePacket;
+import com.mygdx.rozproszone.network.packets.LobbyPacket;
+import com.mygdx.rozproszone.network.packets.Packet;
+import com.mygdx.rozproszone.network.packets.PacketsConstants;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

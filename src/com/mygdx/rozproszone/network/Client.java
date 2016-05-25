@@ -5,6 +5,8 @@
  */
 package com.mygdx.rozproszone.network;
 
+import com.mygdx.rozproszone.network.packets.GamePacket;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

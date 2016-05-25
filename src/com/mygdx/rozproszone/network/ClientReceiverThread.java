@@ -1,5 +1,7 @@
 package com.mygdx.rozproszone.network;
 
+import com.mygdx.rozproszone.network.packets.*;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 

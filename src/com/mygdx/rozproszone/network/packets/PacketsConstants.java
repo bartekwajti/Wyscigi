@@ -1,4 +1,4 @@
-package com.mygdx.rozproszone.network;
+package com.mygdx.rozproszone.network.packets;
 
 /**
  * Created by Admin on 2016-05-23.

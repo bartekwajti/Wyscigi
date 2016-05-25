@@ -6,6 +6,8 @@
 package com.mygdx.rozproszone.network;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.rozproszone.network.packets.GamePacket;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;

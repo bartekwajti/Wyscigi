@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.rozproszone.network;
+package com.mygdx.rozproszone.network.packets;
 
 import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;

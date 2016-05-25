@@ -17,7 +17,7 @@ import com.mygdx.rozproszone.Level;
 import com.mygdx.rozproszone.Player;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Client.PacketProvider;
-import com.mygdx.rozproszone.network.GamePacket;
+import com.mygdx.rozproszone.network.packets.GamePacket;
 import com.mygdx.rozproszone.network.Server;
 
 import java.util.ArrayList;
