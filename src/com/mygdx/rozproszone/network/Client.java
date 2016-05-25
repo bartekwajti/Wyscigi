@@ -5,7 +5,9 @@
  */
 package com.mygdx.rozproszone.network;
 
+import com.mygdx.rozproszone.network.packets.CommandPacket;
 import com.mygdx.rozproszone.network.packets.GamePacket;
+import com.mygdx.rozproszone.network.packets.PacketsConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +31,11 @@ public class Client {
     
     public interface PacketProvider {
         GamePacket getPacket();
+        void onPlayerDisconnected(Integer key);
     }
-    
+
+    ClientReceiverThread clientReceiver;
+
     PacketProvider packetProvider;
     public static final String SEPARATOR = ":";
     private static final Logger log = Logger.getLogger(Client.class.getName());
@@ -60,8 +65,6 @@ public class Client {
         
         try { 
             socket = new Socket(host, port);
-//            OutputStream os = socket.getOutputStream();
-//            oos = new ObjectOutputStream(os); 
             
             is = socket.getInputStream();
             ois = new ObjectInputStream(is);
@@ -71,8 +74,7 @@ public class Client {
         
         try {
             setupGamePacket = (GamePacket)ois.readObject();
-            //ois.close();
-            //socket.shutdownInput();
+
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -87,7 +89,7 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ClientReceiverThread clientReceiver = new ClientReceiverThread(ois, this);
+        clientReceiver = new ClientReceiverThread(ois, this);
         Thread thread = new Thread(clientReceiver);
         thread.start();
 
@@ -134,6 +136,16 @@ public class Client {
         }
     }
 
+    public void removePlayerState(int id) {
+        synchronized (playersStates) {
+            Integer key = id;
+            if(playersStates.containsKey(key)) {
+                playersStates.remove(key);
+                packetProvider.onPlayerDisconnected(key);
+            }
+        }
+    }
+
     public ArrayList<GamePacket> getStates() {
         ArrayList<GamePacket> states = new ArrayList<>(5);
         synchronized (playersStates) {
@@ -146,8 +158,23 @@ public class Client {
         return states;
     }
 
+    private void sendDisconnectPacket() {
+        try {
+            CommandPacket disconnectPacket = new CommandPacket(PacketsConstants.CMD_DISCONNECT);
+            oos.writeObject(disconnectPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void diconnect() {
+    public void disconnect() {
+        sendDisconnectPacket();
+        clientReceiver.stop();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         try {
             socket.close();
         } catch (IOException e) {

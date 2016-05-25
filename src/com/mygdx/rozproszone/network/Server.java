@@ -53,7 +53,7 @@ public class Server implements Runnable{
                  try {
                      Socket client = server.accept();
                      if (client != null) {
-                         messageProcessor.addClient(client);
+                         messageProcessor.addClient(client, connectedPlayers);
                          ReceiverThread receiver = new ReceiverThread(connectedPlayers, client, messageProcessor);
                          Thread th = new Thread(receiver);
                          th.start();

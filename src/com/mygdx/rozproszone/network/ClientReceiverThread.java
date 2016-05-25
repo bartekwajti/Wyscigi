@@ -38,7 +38,12 @@ public class ClientReceiverThread implements Runnable {
                 else if(packetType.equals(PacketsConstants.COMMAND_PACKET)) {
                     CommandPacket commandPacket = (CommandPacket)receivedPacket;
                     if(commandPacket.command.equals("serverClosing")) {
-                        client.diconnect();
+                        client.disconnect();
+                    }
+                    switch (commandPacket.command) {
+                        case PacketsConstants.CMD_PLAYER_DISCONNECTED:
+                            client.removePlayerState(commandPacket.playerID);
+                            break;
                     }
                 }
 
@@ -59,5 +64,9 @@ public class ClientReceiverThread implements Runnable {
             }
         }
 
+    }
+
+    public synchronized void stop() {
+        running = false;
     }
 }

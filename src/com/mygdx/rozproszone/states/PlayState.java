@@ -248,7 +248,8 @@ public class PlayState extends GameState implements PacketProvider {
 
     @Override
     public void dispose() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        client.disconnect();
     }
 
     @Override
@@ -258,7 +259,12 @@ public class PlayState extends GameState implements PacketProvider {
         playerID, player1.getLaps());
         return gamePacket;
     }
-    
+
+    @Override
+    public void onPlayerDisconnected(Integer key) {
+        players.remove(key);
+    }
+
     public void setServer(String server) {
 
             this.server = server;

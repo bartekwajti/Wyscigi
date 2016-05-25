@@ -12,10 +12,9 @@ import java.io.Serializable;
  *
  * @author Admin
  */
-public class GamePacket extends Packet implements Serializable {
+public class GamePacket extends Packet {
     public Vector2 position;
     public float angle;
-    public int playerID;
     public int lapsCount;
     
     public GamePacket(Vector2 position, float angle, int id, int lapsCount) {

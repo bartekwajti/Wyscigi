@@ -5,10 +5,7 @@
  */
 package com.mygdx.rozproszone.network;
 
-import com.mygdx.rozproszone.network.packets.GamePacket;
-import com.mygdx.rozproszone.network.packets.LobbyPacket;
-import com.mygdx.rozproszone.network.packets.Packet;
-import com.mygdx.rozproszone.network.packets.PacketsConstants;
+import com.mygdx.rozproszone.network.packets.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +53,17 @@ public class ReceiverThread implements Runnable {
                 else if(packetType.equals(PacketsConstants.LOBBY_PACKET)) {
                     LobbyPacket lobbyPacket = (LobbyPacket)receivedPacket;
 
+                }
+                else if(packetType.equals(PacketsConstants.COMMAND_PACKET)) {
+                    CommandPacket commandPacket = (CommandPacket)receivedPacket;
+
+                    switch (commandPacket.command) {
+                        case PacketsConstants.CMD_DISCONNECT:
+                            running = false;
+                            messageProcessor.removeClient(socket, id);
+                            System.out.println("Client " + id  +" disconnected");
+                            break;
+                    }
                 }
 
 

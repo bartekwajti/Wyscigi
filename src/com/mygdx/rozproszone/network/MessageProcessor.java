@@ -6,7 +6,10 @@
 package com.mygdx.rozproszone.network;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.rozproszone.network.packets.CommandPacket;
 import com.mygdx.rozproszone.network.packets.GamePacket;
+import com.mygdx.rozproszone.network.packets.Packet;
+import com.mygdx.rozproszone.network.packets.PacketsConstants;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -24,15 +27,22 @@ public class MessageProcessor implements Runnable {
     
     boolean running = true;
     
-    private ArrayList<GamePacket> gamePackets = new ArrayList<>();
+    private ArrayList<Packet> gamePackets = new ArrayList<>();
+
     private ArrayList<Socket> clients = new ArrayList<>();
     private ArrayList<ObjectOutputStream> streams = new ArrayList<>();
     
     public MessageProcessor() {
         
     }
-    
-    public synchronized void addClient(Socket socket) {
+
+    public synchronized int getClientsCount() {
+        synchronized (clients) {
+            return clients.size();
+        }
+    }
+
+    public synchronized void addClient(Socket socket, int id) {
         clients.add(socket);
         synchronized(streams)
         {
@@ -43,7 +53,9 @@ public class MessageProcessor implements Runnable {
             //send configuration packet to client
             GamePacket setupGamePacket = new GamePacket(new Vector2(100,100),
                                             0.0f,
-                                            streams.size()-1, 0);
+                                            id,
+                                            0);
+
             oos.writeObject(setupGamePacket);
         } catch (IOException ex) {
             Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,10 +63,31 @@ public class MessageProcessor implements Runnable {
         }
         
     }
-    
-    public void addPacket(GamePacket gamePacket) {
+
+    public synchronized void removeClient(Socket socket, int id) {
+        synchronized (gamePackets) {
+            try {
+
+                socket.close();
+                int index = clients.indexOf(socket);
+                clients.set(index, null);
+                streams.set(index, null);
+
+                CommandPacket disconnectedPacket = new CommandPacket(PacketsConstants.CMD_PLAYER_DISCONNECTED);
+                disconnectedPacket.playerID = index;
+                addPacket(disconnectedPacket);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    public void addPacket(Packet packet) {
         synchronized(gamePackets) {
-            gamePackets.add(gamePacket);
+            gamePackets.add(packet);
         }
     }
     
@@ -63,12 +96,21 @@ public class MessageProcessor implements Runnable {
         
         while (running) {
             synchronized(gamePackets) {
-                for(GamePacket gamePacket : gamePackets) {
+                for(Packet packet : gamePackets) {
                     for(int i = 0; i < clients.size(); ++i) {
-                        System.out.println(gamePacket.playerID + " [" + gamePacket.position.x + ", " + gamePacket.position.y + "] " + gamePacket.angle  + " " + gamePacket.lapsCount);
-                        if(i != gamePacket.playerID) {
+                        if(clients.get(i) != null && i != packet.playerID) {
                             try {
-                                streams.get(i).writeObject(gamePacket);
+
+                                if(packet.getPacketName().equals(PacketsConstants.GAME_PACKET)) {
+                                    GamePacket gamePacket = (GamePacket)packet;
+                                    streams.get(i).writeObject(gamePacket);
+                                    System.out.println(gamePacket.playerID + " [" + gamePacket.position.x + ", " + gamePacket.position.y + "] " + gamePacket.angle  + " " + gamePacket.lapsCount);
+                                }
+                                else if (packet.getPacketName().equals(PacketsConstants.COMMAND_PACKET)) {
+                                    CommandPacket commandPacket = (CommandPacket) packet;
+                                    streams.get(i).writeObject(commandPacket);
+                                    //streams.get(i).writeObject(packet);
+                                }
                             } catch (IOException ex) {
                                 Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
                             }
