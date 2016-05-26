@@ -92,10 +92,11 @@ public class MessageProcessor implements Runnable {
     
     @Override
     public void run() {
-        
+        String packetType;
         while (running) {
             synchronized(gamePackets) {
                 for(Packet packet : gamePackets) {
+                    packetType = packet.getPacketName();
                     for(int i = 0; i < clients.size(); ++i) {
                         if(clients.get(i) != null && i != packet.playerID) {
                             try {
@@ -107,6 +108,7 @@ public class MessageProcessor implements Runnable {
                                 }
                                 else if (packet.getPacketName().equals(PacketsConstants.COMMAND_PACKET)) {
                                     CommandPacket commandPacket = (CommandPacket) packet;
+
                                     streams.get(i).writeObject(commandPacket);
                                     //streams.get(i).writeObject(packet);
                                 }
@@ -117,6 +119,25 @@ public class MessageProcessor implements Runnable {
                             } catch (IOException ex) {
                                 Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                        }
+                        else if(clients.get(i) != null && i == packet.playerID) {
+                            try {
+                                switch (packetType) {
+                                    case PacketsConstants.INFO_PACKET: {
+                                        InfoPacket infoPacket = (InfoPacket) packet;
+                                        switch (infoPacket.info) {
+                                            case PacketsConstants.INFO_SERVER_IS_READY:
+                                                streams.get(i).writeObject(infoPacket);
+                                                break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            } catch (IOException ex) {
+                                Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+
                         }
                             
                     }

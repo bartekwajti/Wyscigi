@@ -14,12 +14,13 @@ import com.mygdx.rozproszone.network.Server;
 /**
  * Created by Przemysław on 2016-05-19.
  */
-public class HostLobbyState extends GameState implements OptionsLobbyState.OptionsListener {
+public class HostLobbyState extends GameState implements OptionsLobbyState.OptionsListener, Client.ServerListener {
 
     private BitmapFont font;
     private int lapsCounter;
     private String ip;
     private int selectedOption;
+    private boolean isServerReady;
     private String[] options = {
             "Start Game",
             "Options",
@@ -39,7 +40,9 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
         generator.dispose();
 
+        isServerReady = false;
         client = new Client(ip, Server.PORT);
+        client.setServerListener(this);
     }
 
     @Override
@@ -55,7 +58,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 
-            if(selectedOption == 0) {
+            if(selectedOption == 0 && isServerReady) {
                 // start game
                 PlayState playState = new PlayState(gsm, lapsCounter);
                 playState.setLaps(lapsCounter);
@@ -115,5 +118,10 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     public void onLapsSet(int laps) {
         this.lapsCounter = laps;
         client.sendLapsCount(laps);
+    }
+
+    @Override
+    public void onServerIsReady() {
+        isServerReady = true;
     }
 }

@@ -40,10 +40,15 @@ public class Client {
         void onLapsCountChanged(int lapsCount);
     }
 
+    public interface ServerListener {
+        void onServerIsReady();
+    }
+
     ClientReceiverThread clientReceiver;
 
     PacketProvider packetProvider;
     LobbyListener lobbyListener;
+    ServerListener serverListener;
 
     public static final String SEPARATOR = ":";
     private static final Logger log = Logger.getLogger(Client.class.getName());
@@ -204,6 +209,14 @@ public class Client {
 
     public void setPacketProvider(PacketProvider packetProvider) {
         this.packetProvider = packetProvider;
+    }
+
+    public void setServerListener(ServerListener serverListener) {
+        this.serverListener = serverListener;
+    }
+
+    public ServerListener getServerListener() {
+        return serverListener;
     }
 
     public void disconnect() {

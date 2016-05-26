@@ -1,5 +1,6 @@
 package com.mygdx.rozproszone.network;
 
+import com.jcraft.jorbis.Info;
 import com.mygdx.rozproszone.network.packets.*;
 
 import java.io.IOException;
@@ -46,6 +47,14 @@ public class ClientReceiverThread implements Runnable {
                             break;
                         case PacketsConstants.INFO_GAME_STARTED:
                             client.getLobbyListener().onGameStart();
+                            break;
+                    }
+                }
+                else if (packetType.equals(PacketsConstants.INFO_PACKET)) {
+                    InfoPacket infoPacket = (InfoPacket)receivedPacket;
+                    switch (infoPacket.info) {
+                        case PacketsConstants.INFO_SERVER_IS_READY:
+                            client.getServerListener().onServerIsReady();
                             break;
                     }
                 }
