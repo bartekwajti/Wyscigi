@@ -133,7 +133,6 @@ public class Client {
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
     public GamePacket getSetupGamePacket() {
