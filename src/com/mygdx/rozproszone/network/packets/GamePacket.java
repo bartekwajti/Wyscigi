@@ -16,12 +16,14 @@ public class GamePacket extends Packet {
     public Vector2 position;
     public float angle;
     public int lapsCount;
+    public int lives;
     
-    public GamePacket(Vector2 position, float angle, int id, int lapsCount) {
+    public GamePacket(Vector2 position, float angle, int id, int lapsCount, int lives) {
         this.position = position;
         this.angle = angle;
         this.playerID = id;
         this.lapsCount = lapsCount;
+        this.lives = lives;
     }
 
 

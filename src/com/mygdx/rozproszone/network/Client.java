@@ -29,7 +29,9 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class Client {
-    
+
+
+
     public interface PacketProvider {
         GamePacket getPacket();
         void onPlayerDisconnected(Integer key);
@@ -38,6 +40,7 @@ public class Client {
     public interface LobbyListener {
         void onGameStart();
         void onLapsCountChanged(int lapsCount);
+        void onLivesCountChanged(int livesCount);
     }
 
     public interface ServerListener {
@@ -189,9 +192,9 @@ public class Client {
         }
     }
 
-    public void sendLapsCount(int lapsCount) {
+    public void sendLapsCount(int lapsCount, int livesCount) {
         try {
-            LobbyPacket lobbyPacket = new LobbyPacket(lapsCount);
+            LobbyPacket lobbyPacket = new LobbyPacket(lapsCount, livesCount);
             lobbyPacket.playerID = clientID;
             oos.writeObject(lobbyPacket);
         } catch (IOException e) {

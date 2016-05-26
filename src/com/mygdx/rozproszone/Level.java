@@ -5,22 +5,28 @@
  */
 package com.mygdx.rozproszone;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.graphics.Color;
+
 
 /**
  *
  * @author Daniel && Bartlomiej && Przemysław
  */
 public class Level {
+    private BitmapFont font;
     private SpriteBatch batch;
     private Texture levelTexture;
     private Sprite levelSprite;
@@ -41,6 +47,7 @@ public class Level {
     float h;
     int lapsPositionX;
     int lapsPositionY;
+
 
 
     public Level(String levelTextureName){
@@ -73,6 +80,10 @@ public class Level {
         layer0.setVisible(true);
         layer1.setVisible(true);
         layer2.setVisible(true);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 26;
+        font = generator.generateFont(parameter);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
         collisionObjects= map.getLayers().get("Collision").getObjects();
         slowDustObjects= map.getLayers().get("SlowDust").getObjects();
@@ -107,52 +118,29 @@ public class Level {
     public void draw(Player player){
         player.getCarImage().draw(batch);
     }
-    public void drawPlayerLaps(Player player, int displacement){
-        int id = player.getID();
+    public void drawPlayerLaps(Player player){
         int laps = player.getLaps();
-        switch (laps){
-            case 9:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 8:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 7:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 6:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 5:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 4:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 3:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
-                break;
-            case 2:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
+        int displacement = player.getID();
+        switch (displacement) {
+            case 0:
+                font.setColor(Color.BLACK);
+                font.draw(batch, "Black " + laps + " Lives " + player.getLives(), w - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
                 break;
             case 1:
-                spriteNumbers[laps-1].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[laps-1].draw(batch);
+                font.setColor(Color.GOLD);
+                font.draw(batch, "Yellow " + laps + " Lives " + player.getLives(), w - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
                 break;
-            case 0:
-
+            case 2:
+                font.setColor(Color.FIREBRICK);
+                font.draw(batch, "Red " + laps + " Lives " + player.getLives(), w - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
+                break;
+            case 3:
+                font.setColor(Color.SKY);
+                font.draw(batch, "Blue " + laps + " Lives " + player.getLives(), w - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
                 break;
             default:
-                spriteNumbers[9].setPosition(w-scoreBoardTexture.getWidth()+lapsPositionX,lapsPositionY - (displacement*30));
-                spriteNumbers[9].draw(batch);
+                font.setColor(Color.WHITE);
+                font.draw(batch, "DEFAULT", w - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
                 break;
         }
     }

@@ -23,7 +23,9 @@ import com.mygdx.rozproszone.network.Server;
 public class ServerClientState extends GameState {
 
     private BitmapFont font;
-    
+
+    private int numberOfPlayers;
+
     private int selectedOption;
     private String[] options = {
         "Create server",
@@ -35,7 +37,9 @@ public class ServerClientState extends GameState {
         super(gsm);
         
         selectedOption = 0;
-        
+
+        numberOfPlayers = 2;
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 48;
@@ -60,7 +64,7 @@ public class ServerClientState extends GameState {
            
             if(selectedOption == 0) {
                 //start server
-                Server server = new Server(2); //server for 4 players
+                Server server = new Server(numberOfPlayers); //server for 4 players
                 Thread th = new Thread(server);
                 th.start();
 

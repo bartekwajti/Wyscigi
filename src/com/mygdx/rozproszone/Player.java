@@ -25,6 +25,7 @@ public class Player {
     private int ID;
     private boolean[] lapsCheck;
     private int lapsCounter;
+    private int lives;
 
     private Music[] sounds;
     private Sprite carImage;
@@ -32,7 +33,7 @@ public class Player {
     private boolean ableToMove;
     private boolean slowedDust;
     
-    public Player(float positionX, float positionY,String carTextureName, float angle, int laps, int ID){
+    public Player(float positionX, float positionY,String carTextureName, float angle, int laps, int ID, int lives){
         this.carTexture=new Texture(carTextureName);
         this.carImage=new Sprite(this.carTexture,0,0,this.carTexture.getWidth(),this.carTexture.getHeight());
         this.positionX=positionX;
@@ -45,6 +46,7 @@ public class Player {
         this.ableToMove = true;
         this.laps = laps;
         this.ID = ID;
+        this.lives = lives;
         this.lapsCheck = new boolean[4];
         this.lapsCounter = 0;
         for (int i =0;i<4;i++){
@@ -203,4 +205,9 @@ public class Player {
     }
 
     public int getID(){ return this.ID;}
+
+    public int getLives(){return this.lives;}
+    public void setLives(int lives){this.lives = lives;}
+    public void decLives(){this.lives--;}
+    public void addLives(){this.lives++;}
 }
