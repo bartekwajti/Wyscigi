@@ -14,6 +14,10 @@ import com.mygdx.rozproszone.GameStateManager;
  */
 public class OptionsLobbyState extends GameState implements Input.TextInputListener{
 
+    public interface OptionsListener {
+        public void onLapsSet(int laps);
+    }
+
     private BitmapFont font;
     private String ip;
     private int lapsCount;
@@ -23,6 +27,7 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
             "Confirm"
     };
 
+    private OptionsListener optionsListener;
 
     protected OptionsLobbyState(GameStateManager gsm, String ip) {
 
@@ -55,7 +60,10 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
                 Gdx.input.getTextInput(this,"Enter number of Laps",Integer.toString(lapsCount),"");
             }
             else if(selectedOption == 1) {
-                gsm.set(new HostLobbyState(gsm, this.lapsCount, ip));
+                // go back to HostLobbyState
+                //gsm.set(new HostLobbyState(gsm, this.lapsCount, ip));
+                optionsListener.onLapsSet(lapsCount);
+                gsm.pop();
                 dispose();
             }
         }
@@ -100,5 +108,9 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
     @Override
     public void canceled() {
         lapsCount = 3;
+    }
+
+    public void setOptionsListener(OptionsListener optionsListener) {
+        this.optionsListener = optionsListener;
     }
 }

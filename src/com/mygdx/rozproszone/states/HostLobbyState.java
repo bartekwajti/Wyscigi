@@ -14,7 +14,7 @@ import com.mygdx.rozproszone.network.Server;
 /**
  * Created by Przemysław on 2016-05-19.
  */
-public class HostLobbyState extends GameState {
+public class HostLobbyState extends GameState implements OptionsLobbyState.OptionsListener {
 
     private BitmapFont font;
     private int lapsCounter;
@@ -56,19 +56,24 @@ public class HostLobbyState extends GameState {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 
             if(selectedOption == 0) {
+                // start game
                 PlayState playState = new PlayState(gsm, lapsCounter);
                 playState.setLaps(lapsCounter);
 
                 client.setPacketProvider(playState);
                 playState.setServer(ip);
                 playState.setClient(client);
+                client.sendStartGamePacket();
+
                 gsm.set(playState);
 
-                client.sendStartGamePacket();
 //                dispose();
             }
             else if (selectedOption == 1){
-                gsm.set(new OptionsLobbyState(gsm,ip));
+                // go to options
+                OptionsLobbyState optionsLobbyState = new OptionsLobbyState(gsm,ip);
+                optionsLobbyState.setOptionsListener(this);
+                gsm.push(optionsLobbyState);
             }
             else if(selectedOption == 2) {
                 // join server
@@ -104,5 +109,11 @@ public class HostLobbyState extends GameState {
     @Override
     public void dispose() {
         font.dispose();
+    }
+
+    @Override
+    public void onLapsSet(int laps) {
+        this.lapsCounter = laps;
+        client.sendLapsCount(laps);
     }
 }

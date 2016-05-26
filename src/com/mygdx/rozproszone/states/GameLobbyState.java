@@ -119,4 +119,9 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     public void onGameStart() {
         isStarting = true;
     }
+
+    @Override
+    public void onLapsCountChanged(int lapsCount) {
+        this.lapsCounter = lapsCount;
+    }
 }

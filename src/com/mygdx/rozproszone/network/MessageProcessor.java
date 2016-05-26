@@ -6,10 +6,7 @@
 package com.mygdx.rozproszone.network;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.rozproszone.network.packets.CommandPacket;
-import com.mygdx.rozproszone.network.packets.GamePacket;
-import com.mygdx.rozproszone.network.packets.Packet;
-import com.mygdx.rozproszone.network.packets.PacketsConstants;
+import com.mygdx.rozproszone.network.packets.*;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -110,6 +107,10 @@ public class MessageProcessor implements Runnable {
                                     CommandPacket commandPacket = (CommandPacket) packet;
                                     streams.get(i).writeObject(commandPacket);
                                     //streams.get(i).writeObject(packet);
+                                }
+                                else if (packet.getPacketName().equals(PacketsConstants.LOBBY_PACKET)) {
+                                    LobbyPacket lobbyPacket = (LobbyPacket) packet;
+                                    streams.get(i).writeObject(lobbyPacket);
                                 }
                             } catch (IOException ex) {
                                 Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);

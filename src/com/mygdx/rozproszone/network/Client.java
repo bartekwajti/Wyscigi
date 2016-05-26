@@ -7,6 +7,7 @@ package com.mygdx.rozproszone.network;
 
 import com.mygdx.rozproszone.network.packets.CommandPacket;
 import com.mygdx.rozproszone.network.packets.GamePacket;
+import com.mygdx.rozproszone.network.packets.LobbyPacket;
 import com.mygdx.rozproszone.network.packets.PacketsConstants;
 
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class Client {
 
     public interface LobbyListener {
         void onGameStart();
+        void onLapsCountChanged(int lapsCount);
     }
 
     ClientReceiverThread clientReceiver;
@@ -177,6 +179,16 @@ public class Client {
         try {
             CommandPacket startGamePacket = new CommandPacket(PacketsConstants.CMD_START_GAME);
             oos.writeObject(startGamePacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendLapsCount(int lapsCount) {
+        try {
+            LobbyPacket lobbyPacket = new LobbyPacket(lapsCount);
+            lobbyPacket.playerID = clientID;
+            oos.writeObject(lobbyPacket);
         } catch (IOException e) {
             e.printStackTrace();
         }
