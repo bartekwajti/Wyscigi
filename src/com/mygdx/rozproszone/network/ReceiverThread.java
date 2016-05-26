@@ -53,6 +53,7 @@ public class ReceiverThread implements Runnable {
                 else if(packetType.equals(PacketsConstants.LOBBY_PACKET)) {
                     LobbyPacket lobbyPacket = (LobbyPacket)receivedPacket;
                     messageProcessor.addPacket(lobbyPacket); // send new laps value to other clients
+                    messageProcessor.setLapsCount(lobbyPacket.lapsCount);
                 }
                 else if(packetType.equals(PacketsConstants.COMMAND_PACKET)) {
                     CommandPacket commandPacket = (CommandPacket)receivedPacket;

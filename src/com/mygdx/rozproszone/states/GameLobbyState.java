@@ -31,7 +31,8 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
         this.ip = ip;
         selectedOption = 0;
         this.isStarting = false;
-        this.lapsCounter = 3;
+        //this.lapsCounter = 3;
+        
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
@@ -41,6 +42,8 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
 
         client =  new Client(ip, Server.PORT);
         client.setLobbyListener(this);
+
+        this.lapsCounter = client.getSetupGamePacket().lapsCount;
     }
 
     @Override

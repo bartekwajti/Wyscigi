@@ -28,7 +28,9 @@ public class MessageProcessor implements Runnable {
 
     private ArrayList<Socket> clients = new ArrayList<>();
     private ArrayList<ObjectOutputStream> streams = new ArrayList<>();
-    
+
+    private int lapsCount = 3;
+
     public MessageProcessor() {
         
     }
@@ -51,7 +53,7 @@ public class MessageProcessor implements Runnable {
             GamePacket setupGamePacket = new GamePacket(new Vector2(100,100),
                                             0.0f,
                                             id,
-                                            0);
+                                            lapsCount);
 
             oos.writeObject(setupGamePacket);
         } catch (IOException ex) {
@@ -122,6 +124,10 @@ public class MessageProcessor implements Runnable {
                 gamePackets.clear();
             }
         }
+    }
+
+    public void setLapsCount(int lapsCount) {
+        this.lapsCount = lapsCount;
     }
     
 }
