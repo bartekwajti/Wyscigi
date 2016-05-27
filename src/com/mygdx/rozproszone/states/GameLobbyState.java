@@ -102,8 +102,8 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     public void render(SpriteBatch batch) {
         batch.begin();
         font.setColor(Color.GREEN);
-        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-80);
-        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-120);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-60);
+        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-110);
 
 
         for(int i = 0; i < options.length; ++i) {

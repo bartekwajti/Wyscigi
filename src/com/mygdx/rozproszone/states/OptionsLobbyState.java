@@ -15,8 +15,7 @@ import com.mygdx.rozproszone.GameStateManager;
 public class OptionsLobbyState extends GameState implements Input.TextInputListener{
 
     public interface OptionsListener {
-        public void onLapsSet(int laps);
-        public void onLivesSet(int lives);
+        public void setOptions(int laps, int lives);
     }
     private boolean enterLaps;
     private boolean enterLives;
@@ -33,14 +32,15 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
 
     private OptionsListener optionsListener;
 
-    protected OptionsLobbyState(GameStateManager gsm, String ip) {
+    protected OptionsLobbyState(GameStateManager gsm, String ip, int lapsCount, int livesCount) {
 
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
         enterLaps = false;
         enterLives = false;
-        this.lapsCount = 3;
+        this.lapsCount = lapsCount;
+        this.livesCount = livesCount;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
@@ -74,7 +74,7 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
             else if(selectedOption == 2) {
                 // go back to HostLobbyState
                 //gsm.set(new HostLobbyState(gsm, this.lapsCount, ip));
-                optionsListener.onLapsSet(lapsCount);
+                optionsListener.setOptions(lapsCount, livesCount);
                 gsm.pop();
                 dispose();
             }
@@ -95,11 +95,14 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
                 font.setColor(Color.WHITE);
             else
                 font.setColor(Color.GREEN);
-            if (selectedOption == 0){
+            if (i == 0){
                 font.draw(batch, options[i] + " " + lapsCount, Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
             }
-            else if (selectedOption == 1){
+            else if (i == 1){
                 font.draw(batch, options[i] + " " + livesCount, Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            }
+            else{
+                font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
             }
         }
 

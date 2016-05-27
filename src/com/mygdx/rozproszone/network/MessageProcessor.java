@@ -30,6 +30,7 @@ public class MessageProcessor implements Runnable {
     private ArrayList<ObjectOutputStream> streams = new ArrayList<>();
 
     private int lapsCount = 3;
+    private int liveCount = 3;
 
     public MessageProcessor() {
         
@@ -53,7 +54,8 @@ public class MessageProcessor implements Runnable {
             GamePacket setupGamePacket = new GamePacket(new Vector2(100,100),
                                             0.0f,
                                             id,
-                                            lapsCount);
+                                            lapsCount,
+                                            liveCount);
 
             oos.writeObject(setupGamePacket);
         } catch (IOException ex) {

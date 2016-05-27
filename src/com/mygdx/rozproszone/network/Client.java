@@ -191,7 +191,7 @@ public class Client {
         }
     }
 
-    public void sendLapsCount(int lapsCount, int livesCount) {
+    public void sendOptionsParameters(int lapsCount, int livesCount) {
         try {
             LobbyPacket lobbyPacket = new LobbyPacket(lapsCount, livesCount);
             lobbyPacket.playerID = clientID;

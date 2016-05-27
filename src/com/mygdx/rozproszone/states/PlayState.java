@@ -112,8 +112,7 @@ public class PlayState extends GameState implements PacketProvider {
         }
         else if(player1.getVelocity() > 0)
         {
-            if (player1.getAbleToMove()) {
-                
+
                 if (velocityFlag) {
                     newX = (float) (Math.sin(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
                     newY = (float) (Math.cos(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
@@ -155,10 +154,7 @@ public class PlayState extends GameState implements PacketProvider {
                         player1.getCarImage().rotate(1);
                         player1.changeAngle((-1));
                     }
-                }
-            }
-            else{
-                player1.setVelocity(0);
+
             }
         }
         player1.checkLaps();
@@ -174,6 +170,7 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setPositionY(state.position.y);
                 player.setAngle(state.angle);
                 player.setLaps(state.lapsCount);//no angle in player
+                player.setLives(state.lives);
                 checkPlayersCollision(player);
             } else {
                 switch (state.playerID) {
@@ -217,13 +214,13 @@ public class PlayState extends GameState implements PacketProvider {
     }
 
     private void checkPlayersCollision(Player player){
+
         Rectangle mainPlayer = new Rectangle();
         Rectangle otherPlayer = new Rectangle();
         mainPlayer.set(player1.getPositionX(),player1.getPositionY(),player1.getCarImage().getWidth(),player1.getCarImage().getHeight());
         otherPlayer.set(player.getPositionX(),player.getPositionY(),player.getCarImage().getWidth(),player.getCarImage().getHeight());
         if (mainPlayer.overlaps(otherPlayer)){
-            player1.decLives();
-           // player.setVelocity(0.0);
+            player1.crash(player);
         }
 
     }

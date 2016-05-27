@@ -77,7 +77,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
             }
             else if (selectedOption == 1){
                 // go to options
-                OptionsLobbyState optionsLobbyState = new OptionsLobbyState(gsm,ip);
+                OptionsLobbyState optionsLobbyState = new OptionsLobbyState(gsm,ip, lapsCounter, livesCounter);
                 optionsLobbyState.setOptionsListener(this);
                 gsm.push(optionsLobbyState);
             }
@@ -98,8 +98,8 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     public void render(SpriteBatch batch) {
         batch.begin();
         font.setColor(Color.GREEN);
-        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-80);
-        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-120);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-60);
+        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-110);
 
 
         for(int i = 0; i < options.length; ++i) {
@@ -130,15 +130,10 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     }
 
     @Override
-    public void onLapsSet(int laps) {
+    public void setOptions(int laps, int lives) {
         this.lapsCounter = laps;
-        client.sendLapsCount(laps);
-    }
-
-    @Override
-    public void  onLivesSet(int lives){
         this.livesCounter = lives;
-        client.sendLivesCount(lives);
+        client.sendOptionsParameters(laps, lives);
     }
 
     @Override
