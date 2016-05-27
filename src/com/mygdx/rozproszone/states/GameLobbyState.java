@@ -20,6 +20,7 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     private String ip;
     private int selectedOption;
     private boolean isStarting;
+    private int livesCounter;
     private String[] options = {
             "Back"
     };
@@ -44,6 +45,8 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
         client.setLobbyListener(this);
 
         this.lapsCounter = client.getSetupGamePacket().lapsCount;
+        this.livesCounter = client.getSetupGamePacket().lives;
+
     }
 
     @Override
@@ -78,9 +81,9 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
         //isStarting = true;
         if (isStarting)
         {
-            PlayState playState = new PlayState(gsm, lapsCounter);
+            PlayState playState = new PlayState(gsm);
             playState.setLaps(lapsCounter);
-
+            playState.setLives(livesCounter);
             client.setPacketProvider(playState);
             playState.setServer(ip);
             playState.setClient(client);
@@ -99,7 +102,9 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     public void render(SpriteBatch batch) {
         batch.begin();
         font.setColor(Color.GREEN);
-        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-80);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-60);
+        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-110);
+
 
         for(int i = 0; i < options.length; ++i) {
             if(i == selectedOption)
@@ -126,5 +131,10 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     @Override
     public void onLapsCountChanged(int lapsCount) {
         this.lapsCounter = lapsCount;
+    }
+
+    @Override
+    public void onLivesCountChanged(int livesCount) {
+        this.livesCounter = livesCount;
     }
 }

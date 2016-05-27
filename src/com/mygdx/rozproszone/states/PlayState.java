@@ -18,7 +18,7 @@ import com.mygdx.rozproszone.Player;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Client.PacketProvider;
 import com.mygdx.rozproszone.network.packets.GamePacket;
-import com.mygdx.rozproszone.network.Server;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +33,7 @@ public class PlayState extends GameState implements PacketProvider {
     private Player player1;
     private Level level;
     private int hostLaps;
+    private int hostLives;
     String server;
     private int playerID = 0;
     Client client;
@@ -41,10 +42,12 @@ public class PlayState extends GameState implements PacketProvider {
     private Float newX;
     private Float newY;
     private boolean velocityFlag = false;
+    private Float startingPositionX = 150.0f;
+    private Float startingPositionY = 400.0f;
 
     private HashMap<Integer, Player> players = new HashMap<>();
     
-    public PlayState(GameStateManager gsm, int lapsCounter) {
+    public PlayState(GameStateManager gsm) {
         super(gsm);
         level=new Level("plansza.jpg");
         BodyDef bodyDef = new BodyDef();
@@ -109,8 +112,7 @@ public class PlayState extends GameState implements PacketProvider {
         }
         else if(player1.getVelocity() > 0)
         {
-            if (player1.getAbleToMove()) {
-                
+
                 if (velocityFlag) {
                     newX = (float) (Math.sin(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
                     newY = (float) (Math.cos(player1.getAngle() * Math.PI / 180) * player1.getVelocity() * dt);
@@ -152,17 +154,13 @@ public class PlayState extends GameState implements PacketProvider {
                         player1.getCarImage().rotate(1);
                         player1.changeAngle((-1));
                     }
-                }
-            }
-            else{
-                player1.setVelocity(0);
+
             }
         }
         player1.checkLaps();
         client.update();
 
         ArrayList<GamePacket> states = client.getStates();
-        int pngCounter = 0;
         for(GamePacket state : states) {
             Integer key = state.playerID;
             Player player;
@@ -172,38 +170,40 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setPositionY(state.position.y);
                 player.setAngle(state.angle);
                 player.setLaps(state.lapsCount);//no angle in player
+                player.setLives(state.lives);
+                checkPlayersCollision(player);
             } else {
                 switch (state.playerID) {
+                    case 0:
+                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,0,state.lives);
+                        break;
                     case 1:
-                        player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,2);
+                        player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,1,state.lives);
                         break;
                     case 2:
-                        player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2);
+                        player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2,state.lives);
                         break;
                     case 3:
-                        player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,2);
+                        player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,3,state.lives);
                         break;
                     default:
-                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,2);
+                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,0,state.lives);
                         break;
                 }
                 players.put(key, player);
             }
-            pngCounter++;
         }
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        int i = 0;
         level.startView();
         level.draw(player1);
-        level.drawPlayerLaps(player1, i);
-        i++;
+        level.drawPlayerLaps(player1);
+
         for (Map.Entry entry : players.entrySet()) {
             level.draw((Player)entry.getValue());
-            level.drawPlayerLaps((Player)entry.getValue(), i);
-            i++;
+            level.drawPlayerLaps((Player)entry.getValue());
         }
         level.updateView();
     }
@@ -212,14 +212,28 @@ public class PlayState extends GameState implements PacketProvider {
     public void handleInput() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    private void checkPlayersCollision(Player player){
+
+        Rectangle mainPlayer = new Rectangle();
+        Rectangle otherPlayer = new Rectangle();
+        mainPlayer.set(player1.getPositionX(),player1.getPositionY(),player1.getCarImage().getWidth(),player1.getCarImage().getHeight());
+        otherPlayer.set(player.getPositionX(),player.getPositionY(),player.getCarImage().getWidth(),player.getCarImage().getHeight());
+        if (mainPlayer.overlaps(otherPlayer)){
+            player1.crash(player);
+        }
+
+    }
+
     private void checkCollision(Float x, Float y){
+
         for (int i = 0; i < level.getCollisionObjects().getCount(); i++) {
             RectangleMapObject obj = (RectangleMapObject) level.getCollisionObjects().get(i);
+
             Rectangle rect = obj.getRectangle();
             Rectangle recPlayer = new Rectangle();
-            recPlayer.set(player1.getPositionX()+x,player1.getPositionY()+y,player1.getCarImage().getWidth()-6,player1.getCarImage().getHeight()-20);
-            
+            recPlayer.set(player1.getPositionX()+x,player1.getPositionY()+y,player1.getCarImage().getWidth(),player1.getCarImage().getHeight());
+
             
             if (recPlayer.overlaps(rect)) {
                 newX = 0.0f;
@@ -256,7 +270,7 @@ public class PlayState extends GameState implements PacketProvider {
     public GamePacket getPacket() {
         GamePacket gamePacket = new GamePacket(new Vector2(player1.getPositionX(), player1.getPositionY()),
         player1.getAngle(),
-        playerID, player1.getLaps());
+        playerID, player1.getLaps(),player1.getLives());
         return gamePacket;
     }
 
@@ -294,16 +308,16 @@ public class PlayState extends GameState implements PacketProvider {
         switch (this.playerID)
         {
             case 0:
-                player1= new Player(150,450,"player1.png",360.0f,hostLaps,1);
+                player1= new Player(startingPositionX, startingPositionY,"player1.png",360.0f,hostLaps,0,hostLives);
                 break;
             case 1:
-                player1= new Player(150,450,"player2.png",360.0f,hostLaps,1);
+                player1= new Player(startingPositionX +60.0f, startingPositionY,"player2.png",360.0f,hostLaps,1,hostLives);
                 break;
             case 2:
-                player1= new Player(150,450,"player3.png",360.0f,hostLaps,1);
+                player1= new Player(startingPositionX, startingPositionY -80.0f,"player3.png",360.0f,hostLaps,2,hostLives);
                 break;
             case 3:
-                player1= new Player(150,450,"player4.png",360.0f,hostLaps,1);
+                player1= new Player(startingPositionX +60.0f, startingPositionY -80.0f,"player4.png",360.0f,hostLaps,3,hostLives);
                 break;
         }
     }
@@ -311,5 +325,6 @@ public class PlayState extends GameState implements PacketProvider {
     public void setLaps(int laps){
         this.hostLaps = laps;
     }
+    public void setLives(int lives) {this.hostLives = lives;}
     
 }

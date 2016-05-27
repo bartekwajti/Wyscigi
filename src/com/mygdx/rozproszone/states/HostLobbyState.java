@@ -18,6 +18,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
     private BitmapFont font;
     private int lapsCounter;
+    private int livesCounter;
     private String ip;
     private int selectedOption;
     private boolean isServerReady;
@@ -28,11 +29,12 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     };
 
     Client client;
-    protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip) {
+    protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip, int livesCounter) {
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
         this.lapsCounter = lapsCounter;
+        this.livesCounter = livesCounter;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
@@ -60,8 +62,9 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
             if(selectedOption == 0 && isServerReady) {
                 // start game
-                PlayState playState = new PlayState(gsm, lapsCounter);
+                PlayState playState = new PlayState(gsm);
                 playState.setLaps(lapsCounter);
+                playState.setLives(livesCounter);
 
                 client.setPacketProvider(playState);
                 playState.setServer(ip);
@@ -74,7 +77,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
             }
             else if (selectedOption == 1){
                 // go to options
-                OptionsLobbyState optionsLobbyState = new OptionsLobbyState(gsm,ip);
+                OptionsLobbyState optionsLobbyState = new OptionsLobbyState(gsm,ip, lapsCounter, livesCounter);
                 optionsLobbyState.setOptionsListener(this);
                 gsm.push(optionsLobbyState);
             }
@@ -95,7 +98,9 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     public void render(SpriteBatch batch) {
         batch.begin();
         font.setColor(Color.GREEN);
-        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-80);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-60);
+        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-110);
+
 
         for(int i = 0; i < options.length; ++i) {
             if(i == selectedOption)
@@ -104,6 +109,16 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
                 font.setColor(Color.GREEN);
 
             font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+        }
+
+        if (isServerReady)
+        {
+            font.setColor(Color.GREEN);
+            font.draw(batch, "READY TO START!!!", Game.WIDTH/2-200, Game.HEIGHT-500);
+        }
+        else{
+            font.setColor(Color.FOREST);
+            font.draw(batch, "Waiting for players...", Game.WIDTH/2-200, Game.HEIGHT-500);
         }
 
         batch.end();
@@ -115,9 +130,10 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     }
 
     @Override
-    public void onLapsSet(int laps) {
+    public void setOptions(int laps, int lives) {
         this.lapsCounter = laps;
-        client.sendLapsCount(laps);
+        this.livesCounter = lives;
+        client.sendOptionsParameters(laps, lives);
     }
 
     @Override

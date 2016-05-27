@@ -6,9 +6,11 @@ package com.mygdx.rozproszone.network.packets;
 public class LobbyPacket extends Packet {
 
     public int lapsCount;
+    public int livesCount;
 
-    public LobbyPacket(int lapsCount) {
+    public LobbyPacket(int lapsCount, int livesCount) {
         this.lapsCount = lapsCount;
+        this.livesCount = livesCount;
     }
 
     @Override

@@ -15,26 +15,32 @@ import com.mygdx.rozproszone.GameStateManager;
 public class OptionsLobbyState extends GameState implements Input.TextInputListener{
 
     public interface OptionsListener {
-        public void onLapsSet(int laps);
+        public void setOptions(int laps, int lives);
     }
-
+    private boolean enterLaps;
+    private boolean enterLives;
     private BitmapFont font;
     private String ip;
     private int lapsCount;
+    private int livesCount;
     private int selectedOption;
     private String[] options = {
             "Laps",
+            "Lives",
             "Confirm"
     };
 
     private OptionsListener optionsListener;
 
-    protected OptionsLobbyState(GameStateManager gsm, String ip) {
+    protected OptionsLobbyState(GameStateManager gsm, String ip, int lapsCount, int livesCount) {
 
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
-        this.lapsCount = 3;
+        enterLaps = false;
+        enterLives = false;
+        this.lapsCount = lapsCount;
+        this.livesCount = livesCount;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
@@ -57,12 +63,18 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 
             if(selectedOption == 0) {
+                enterLaps = true;
                 Gdx.input.getTextInput(this,"Enter number of Laps",Integer.toString(lapsCount),"");
+
             }
-            else if(selectedOption == 1) {
+            if(selectedOption == 1) {
+                enterLives = true;
+                Gdx.input.getTextInput(this,"Enter number of Lives",Integer.toString(livesCount),"");
+            }
+            else if(selectedOption == 2) {
                 // go back to HostLobbyState
                 //gsm.set(new HostLobbyState(gsm, this.lapsCount, ip));
-                optionsListener.onLapsSet(lapsCount);
+                optionsListener.setOptions(lapsCount, livesCount);
                 gsm.pop();
                 dispose();
             }
@@ -83,8 +95,15 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
                 font.setColor(Color.WHITE);
             else
                 font.setColor(Color.GREEN);
-
-            font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            if (i == 0){
+                font.draw(batch, options[i] + " " + lapsCount, Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            }
+            else if (i == 1){
+                font.draw(batch, options[i] + " " + livesCount, Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            }
+            else{
+                font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            }
         }
 
         batch.end();
@@ -96,12 +115,21 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
     }
     @Override
     public void input(String string) {
-        try {
-            lapsCount = Integer.parseInt(string);
+        if (enterLaps) {
+            try {
+                lapsCount = Integer.parseInt(string);
+                enterLaps = false;
+            } catch (NumberFormatException nfe) {
+                lapsCount = 3;
+            }
         }
-        catch (NumberFormatException nfe)
-        {
-            lapsCount = 3;
+        else if (enterLives){
+            try {
+                livesCount = Integer.parseInt(string);
+                enterLives = false;
+            } catch (NumberFormatException nfe) {
+                livesCount = 3;
+            }
         }
     }
 
