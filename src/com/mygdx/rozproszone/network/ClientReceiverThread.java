@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 /**
- * Created by Admin on 2016-05-15.
+ *
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class ClientReceiverThread implements Runnable {
 
     ObjectInputStream ois;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mygdx.rozproszone.states;
 
 import com.badlogic.gdx.Gdx;
@@ -14,13 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 
 /**
  *
- * @author Admin
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class JoinServerState extends GameState implements TextInputListener {
     
     BitmapFont font;
@@ -92,7 +89,7 @@ public class JoinServerState extends GameState implements TextInputListener {
         batch.begin();
 
         font.setColor(Color.GREEN);
-        font.draw(batch, "IP: " + ip, Game.WIDTH/2-200, Game.HEIGHT-50-font.getLineHeight());
+        font.draw(batch, "IP: " + ip, Config.WIDTH/2-200, Config.HEIGHT-50-font.getLineHeight());
 
         for(int i = 0; i < options.length; ++i) {
             if(i == selectedOption)
@@ -100,7 +97,7 @@ public class JoinServerState extends GameState implements TextInputListener {
             else
                 font.setColor(Color.GREEN);
 
-            font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            font.draw(batch, options[i], Config.WIDTH/2-200,Config.HEIGHT-200-i*font.getLineHeight());
         }
 
         //font.draw(batch, "Press ENTER to type, S to start", Game.WIDTH/2-200, Game.HEIGHT-100-font.getLineHeight());

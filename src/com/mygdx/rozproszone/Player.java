@@ -1,32 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mygdx.rozproszone;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.lwjgl.Sys;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  *
- * @author Daniel
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class Player {
+
     private float positionX;
     private float positionY;
     private float angle;
     private double velocity;
-    private double acceleration;    //przyśpieszenie samochodu
-    private double deaccelerate;    //zwalnianie podczas hamowania
     private int laps;
     private int ID;
     private boolean[] lapsCheck;
@@ -35,13 +25,13 @@ public class Player {
     private int checkLapsHelper;
     private boolean isCrashed;
 
-    private Music[] sounds;
     private Sprite carImage;
     private Texture carTexture;
     private boolean ableToMove;
     private boolean slowedDust;
     
     public Player(float positionX, float positionY,String carTextureName, float angle, int laps, int ID, int lives){
+
         this.carTexture=new Texture(carTextureName);
         this.carImage=new Sprite(this.carTexture,0,0,this.carTexture.getWidth(),this.carTexture.getHeight());
         this.positionX=positionX;
@@ -49,8 +39,6 @@ public class Player {
         this.angle = angle;
         this.carImage.setPosition((float)this.positionX,(float) this.positionY);
         this.velocity=0;
-        this.acceleration=10000;
-        this.deaccelerate=50000;
         this.ableToMove = true;
         this.laps = laps;
         this.ID = ID;
@@ -64,11 +52,14 @@ public class Player {
         }
         lapsCheck[lapsCounter] = true;
     }
-    public void setLaps(int laps)
-    {
+
+    public void setLaps(int laps){
+
         this.laps = laps;
     }
+
     public void checkLaps(){
+
         if (lapsCheck[0] && positionX>=720)
         {
             lapsCheck[lapsCounter] = false;
@@ -99,18 +90,27 @@ public class Player {
             this.checkLapsHelper = 0;
         }
     }
+
     public int checkLapsWhenCollision(){
+
         return checkLapsHelper;
     }
+
     public void setAngle(float angle){
+
         if (ableToMove) {
             carImage.setRotation(angle * (-1));
             this.angle = angle;
         }
     }
-    public float getAngle(){return  this.angle;}
-    public void changeAngle(float angle)
-    {
+
+    public float getAngle(){
+
+        return  this.angle;
+    }
+
+    public void changeAngle(float angle){
+
         if (ableToMove) {
             this.angle += angle;
             if (this.angle > 360.0f) {
@@ -122,51 +122,59 @@ public class Player {
     }
 
     public void setAbleToMove(boolean b){
+
         this.ableToMove = b;
     }
+
     public boolean getAbleToMove(){
+
         return this.ableToMove;
     }
+
      public void setSlowedDust(boolean b){
+
         this.slowedDust = b;
     }
+
     public boolean getSlowedDust(){
+
         return this.slowedDust;
     }
+
     public void setPositionX(float positionX){
+
         this.positionX=positionX;
         this.carImage.setPosition(this.positionX,this.positionY);
     }
 
     public void setPositionY(float positionY){
+
         this.positionY=positionY;
         this.carImage.setPosition(this.positionX,this.positionY);
     }
    
     public void setVelocity(double velocity){
+
         this.velocity=velocity;
     }
    
     public float getPositionX(){
+
         return this.positionX;
     }
    
     public float getPositionY(){
+
         return this.positionY;
     }
     
     public double getVelocity(){
+
         return this.velocity;
     }
     
-    public double getAcceleration(){
-        return this.acceleration;
-     }
-    
-    public double getDeccelerate(){
-        return this.deaccelerate;
-     }
     public Sprite getCarImage(){
+
         return this.carImage;
     }
     
@@ -181,6 +189,7 @@ public class Player {
     }
     
     public void changePosition(float changeX,float changeY){
+
         if (ableToMove) {
             this.positionX += changeX;
             this.positionY += changeY;
@@ -189,135 +198,76 @@ public class Player {
     }
     
     public void changeVelocity(double changeVelocity){
+
         this.velocity+=changeVelocity;
     }
-    
-    public void speedUp(float time){
-       if(this.velocity<300) this.velocity=0.5*acceleration*time*time;
-       positionY+=velocity;
-       this.carImage.setPosition(this.positionX,this.positionY);
-       //v=v0+1/2*a*t*t
-    }
-    
-    public void slowDown(float time){
-       if(this.velocity>-10000) this.velocity=-0.5*acceleration*time*time;
-       positionY+=velocity;
-       this.carImage.setPosition(this.positionX,this.positionY);
-    }
-    
-    public void toBreak(float time){
-       if(this.velocity>0) this.velocity=-0.5*deaccelerate*time*time;
-       positionY+=velocity;
-       this.carImage.setPosition(this.positionX,this.positionY);
-    }
-    public int getLaps(){return this.laps;}
-    public void noAccelerateAction(float time){
-       if(this.velocity>-5 && this.velocity<5){
-           this.velocity=0;
-       }
-       else{
-           if(this.velocity>0) this.velocity=-0.5*3000*time*time;
-           else this.velocity=0.5*3000*time*time;
-       }
-       this.positionY+=velocity;
-       this.carImage.setPosition(this.positionX,this.positionY);
+
+    public int getLaps(){
+
+        return this.laps;
     }
 
-    public int getID(){ return this.ID;}
+    public int getID(){
 
-    public int getLives(){return this.lives;}
-    public void setLives(int lives){this.lives = lives;}
+        return this.ID;
+    }
+
+    public int getLives(){
+
+        return this.lives;
+    }
+
+    public void setLives(int lives){
+
+        this.lives = lives;
+    }
+
     public void decLives(){
+
         if (!isCrashed) {
             this.lives--;
         }
     }
-    public void addLives(){this.lives++;}
 
-    public void changeTextureToPlay(Player otherPlayer)
-    {
-        switch (this.ID)
-        {
-            case 0:
-                carTexture = new Texture("player1.png");
-                break;
-            case 1:
-                carTexture = new Texture("player2.png");
-                break;
-            case 2:
-                carTexture = new Texture("player3.png");
-                break;
-            case 3:
-                carTexture = new Texture("player4.png");
-                break;
-        }
+    public void addLives(){
+
+        this.lives++;
+    }
+
+    public void changeTextureToPlay(Player otherPlayer){
+
+        carTexture = new Texture(Config.PLAYER_IMAGE_FILE_NAMES[this.ID]);
         carImage.setRegion(carTexture);
         carImage.setPosition(getPositionX(),getPositionY());
-        switch (otherPlayer.ID)
-        {
-            case 0:
-                otherPlayer.carTexture = new Texture("player1.png");
-                break;
-            case 1:
-                otherPlayer.carTexture = new Texture("player2.png");
-                break;
-            case 2:
-                otherPlayer.carTexture = new Texture("player3.png");
-                break;
-            case 3:
-                otherPlayer.carTexture = new Texture("player4.png");
-                break;
-        }
+
+        otherPlayer.carTexture = new Texture(Config.PLAYER_IMAGE_FILE_NAMES[otherPlayer.ID]);
         otherPlayer.getCarImage().setRegion(otherPlayer.carTexture);
         otherPlayer.getCarImage().setPosition(otherPlayer.positionX,otherPlayer.getPositionY());
     }
 
     public void crash(Player player) {
+
         ableToMove = false;
         decLives();
         isCrashed = true;
-        switch (this.ID)
-        {
-            case 0:
-                this.carTexture = new Texture("player1Crash.png");
-                break;
-            case 1:
-                this.carTexture = new Texture("player2Crash.png");
-                break;
-            case 2:
-                this.carTexture = new Texture("player3Crash.png");
-                break;
-            case 3:
-                this.carTexture = new Texture("player4Crash.png");
-                break;
-        }
-        carImage.setRegion(carTexture);
-        switch (player.ID){
-            case 0:
-                player.carTexture = new Texture("player1Crash.png");
-                break;
-            case 1:
-                player.carTexture = new Texture("player2Crash.png");
-                break;
-            case 2:
-                player.carTexture = new Texture("player3Crash.png");
-                break;
-            case 3:
-                player.carTexture = new Texture("player4Crash.png");
-                break;
-        }
-        player.getCarImage().setRegion(player.carTexture);
 
+        this.carTexture = new Texture(Config.PLAYER_CRASH_IMAGE_FILE_NAMES[this.ID]);
+        carImage.setRegion(carTexture);
+
+        player.carTexture = new Texture(Config.PLAYER_CRASH_IMAGE_FILE_NAMES[player.ID]);
+        player.getCarImage().setRegion(player.carTexture);
 
         new Timer().schedule(new WaitAfterCrash(player){
         },3000);
 
     }
+
     private class WaitAfterCrash extends TimerTask{
 
         private Player otherPlayer;
 
         WaitAfterCrash(Player player){
+
             otherPlayer = player;
         }
 
@@ -327,6 +277,7 @@ public class Player {
 
                 isCrashed = false;
                 changeTextureToPlay(otherPlayer);
+
                 switch (checkLapsWhenCollision())
                 {
                     case 3:

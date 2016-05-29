@@ -6,12 +6,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 
 /**
- * Created by Przemysław on 2016-05-22.
+ *
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class OptionsLobbyState extends GameState implements Input.TextInputListener{
 
     public interface OptionsListener {
@@ -41,7 +44,7 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
         enterLives = false;
         this.lapsCount = lapsCount;
         this.livesCount = livesCount;
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Config.FILES_FONT));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
         font = generator.generateFont(parameter);
@@ -96,13 +99,13 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
             else
                 font.setColor(Color.GREEN);
             if (i == 0){
-                font.draw(batch, options[i] + " " + lapsCount, Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+                font.draw(batch, options[i] + " " + lapsCount, Config.WIDTH/2-200, Config.HEIGHT-200-i*font.getLineHeight());
             }
             else if (i == 1){
-                font.draw(batch, options[i] + " " + livesCount, Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+                font.draw(batch, options[i] + " " + livesCount, Config.WIDTH/2-200, Config.HEIGHT-200-i*font.getLineHeight());
             }
             else{
-                font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+                font.draw(batch, options[i], Config.WIDTH/2-200, Config.HEIGHT-200-i*font.getLineHeight());
             }
         }
 

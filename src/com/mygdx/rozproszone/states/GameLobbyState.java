@@ -6,14 +6,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Server;
 
 /**
- * Created by Przemysław on 2016-05-22.
+ *
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class GameLobbyState extends GameState implements Client.LobbyListener {
     private BitmapFont font;
     private int lapsCounter;
@@ -102,8 +105,8 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     public void render(SpriteBatch batch) {
         batch.begin();
         font.setColor(Color.GREEN);
-        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-60);
-        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-110);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Config.WIDTH/2-200, Config.HEIGHT-60);
+        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Config.WIDTH/2-200, Config.HEIGHT-110);
 
 
         for(int i = 0; i < options.length; ++i) {
@@ -112,7 +115,7 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
             else
                 font.setColor(Color.GREEN);
 
-            font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            font.draw(batch, options[i], Config.WIDTH/2-200, Config.HEIGHT-200-i*font.getLineHeight());
         }
 
         batch.end();

@@ -6,14 +6,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Server;
 
 /**
- * Created by Przemysław on 2016-05-19.
+ *
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class HostLobbyState extends GameState implements OptionsLobbyState.OptionsListener, Client.ServerListener {
 
     private BitmapFont font;
@@ -98,8 +101,8 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     public void render(SpriteBatch batch) {
         batch.begin();
         font.setColor(Color.GREEN);
-        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Game.WIDTH/2-200, Game.HEIGHT-60);
-        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Game.WIDTH/2-200, Game.HEIGHT-110);
+        font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Config.WIDTH/2-200, Config.HEIGHT-60);
+        font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Config.WIDTH/2-200, Config.HEIGHT-110);
 
 
         for(int i = 0; i < options.length; ++i) {
@@ -108,17 +111,17 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
             else
                 font.setColor(Color.GREEN);
 
-            font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            font.draw(batch, options[i], Config.WIDTH/2-200, Config.HEIGHT-200-i*font.getLineHeight());
         }
 
         if (isServerReady)
         {
             font.setColor(Color.GREEN);
-            font.draw(batch, "READY TO START!!!", Game.WIDTH/2-200, Game.HEIGHT-500);
+            font.draw(batch, "READY TO START!!!", Config.WIDTH/2-200, Config.HEIGHT-500);
         }
         else{
             font.setColor(Color.FOREST);
-            font.draw(batch, "Waiting for players...", Game.WIDTH/2-200, Game.HEIGHT-500);
+            font.draw(batch, "Waiting for players...", Config.WIDTH/2-200, Config.HEIGHT-500);
         }
 
         batch.end();

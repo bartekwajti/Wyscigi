@@ -5,13 +5,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 
+/**
+ *
+ * @author Daniel && Bartlomiej && Przemysław
+ */
 
 public class Game extends ApplicationAdapter {
     
-    public static final int WIDTH = 1366;
-    public static final int HEIGHT = 768;
     GameStateManager gsm;
     SpriteBatch batch;
     
@@ -38,6 +39,7 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+
         gsm.dispose();
     }
     

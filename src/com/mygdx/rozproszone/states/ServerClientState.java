@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mygdx.rozproszone.states;
 
 import com.badlogic.gdx.Gdx;
@@ -12,19 +7,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Server;
 
 /**
  *
- * @author Admin
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class ServerClientState extends GameState {
 
     private BitmapFont font;
-
-    private int numberOfPlayers;
 
     private int selectedOption;
     private String[] options = {
@@ -38,12 +33,9 @@ public class ServerClientState extends GameState {
         
         selectedOption = 0;
 
-        numberOfPlayers = 2;
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Config.FILES_FONT));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 48;
-        //parameter.color = Color.GREEN;
         font = generator.generateFont(parameter);
         
         generator.dispose();
@@ -64,12 +56,11 @@ public class ServerClientState extends GameState {
            
             if(selectedOption == 0) {
                 //start server
-                Server server = new Server(numberOfPlayers); //server for 4 players
+                Server server = new Server(Config.NUMBER_OF_PLAYERS_IN_GAME); //server for 4 players
                 Thread th = new Thread(server);
                 th.start();
 
-
-                HostLobbyState lobbyState = new HostLobbyState(gsm,3,"localhost",3);
+                HostLobbyState lobbyState = new HostLobbyState(gsm,Config.NUMBER_OF_LAPS,"localhost",Config.NUMBER_OF_LIVES);
                 gsm.set(lobbyState);
                 dispose();
                 //server.stop();
@@ -93,11 +84,13 @@ public class ServerClientState extends GameState {
 
     @Override
     public void update(float dt) {
+
         handleInput();
     }
 
     @Override
     public void render(SpriteBatch batch) {
+
         batch.begin();
         
         for(int i = 0; i < options.length; ++i) {
@@ -106,7 +99,7 @@ public class ServerClientState extends GameState {
             else
                 font.setColor(Color.GREEN);
             
-            font.draw(batch, options[i], Game.WIDTH/2-200, Game.HEIGHT-200-i*font.getLineHeight());
+            font.draw(batch, options[i], Config.WIDTH/2-200, Config.HEIGHT-200-i*font.getLineHeight());
         }
         
         batch.end();
@@ -114,6 +107,7 @@ public class ServerClientState extends GameState {
 
     @Override
     public void dispose() {
+
         font.dispose();
     }
     

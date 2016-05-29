@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mygdx.rozproszone.states;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +7,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.Level;
 import com.mygdx.rozproszone.Player;
@@ -26,8 +22,9 @@ import java.util.Map;
 
 /**
  *
- * @author Admin
+ * @author Daniel && Bartlomiej && Przemysław
  */
+
 public class PlayState extends GameState implements PacketProvider {
 
     private Player player1;
@@ -49,12 +46,9 @@ public class PlayState extends GameState implements PacketProvider {
     
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        level=new Level("plansza.jpg");
+        level=new Level(Config.FILES_PLANSZA);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-
-
-        //test
 
     }
 
@@ -172,24 +166,9 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setLaps(state.lapsCount);//no angle in player
                 player.setLives(state.lives);
                 checkPlayersCollision(player);
+
             } else {
-                switch (state.playerID) {
-                    case 0:
-                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,0,state.lives);
-                        break;
-                    case 1:
-                        player = new Player(state.position.x,state.position.y,"player2.png", state.angle,state.lapsCount,1,state.lives);
-                        break;
-                    case 2:
-                        player = new Player(state.position.x,state.position.y,"player3.png", state.angle,state.lapsCount,2,state.lives);
-                        break;
-                    case 3:
-                        player = new Player(state.position.x,state.position.y,"player4.png", state.angle,state.lapsCount,3,state.lives);
-                        break;
-                    default:
-                        player = new Player(state.position.x,state.position.y,"player1.png", state.angle,state.lapsCount,0,state.lives);
-                        break;
-                }
+                player = new Player(state.position.x,state.position.y, Config.PLAYER_IMAGE_FILE_NAMES[state.playerID], state.angle,state.lapsCount,playerID,state.lives);
                 players.put(key, player);
             }
         }

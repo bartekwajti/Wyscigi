@@ -2,14 +2,20 @@ package com.mygdx.rozproszone;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.mygdx.rozproszone.Game;
+
+/**
+ *
+ * @author Daniel && Bartlomiej && Przemysław
+ */
 
 public class DesktopLauncher {
+
 	public static void main (String[] arg) {
+
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1366;
-                config.height = 768;
-                config.title = "Projekt - Przetwarzanie Rozproszone - Wyscigi";
+		        config.width = Config.WIDTH;
+                config.height = Config.HEIGHT;
+                config.title = Config.GAME_NAME;
                 config.resizable = false;
                 
                 new LwjglApplication(new Game(), config);
