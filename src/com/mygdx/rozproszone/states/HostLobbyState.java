@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.rozproszone.Config;
-import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Server;
@@ -33,12 +32,13 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
     Client client;
     protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip, int livesCounter) {
+
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
         this.lapsCounter = lapsCounter;
         this.livesCounter = livesCounter;
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Config.FILES_FONT));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
         font = generator.generateFont(parameter);
@@ -94,11 +94,13 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
     @Override
     public void update(float dt) {
+
         handleInput();
     }
 
     @Override
     public void render(SpriteBatch batch) {
+
         batch.begin();
         font.setColor(Color.GREEN);
         font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Config.WIDTH/2-200, Config.HEIGHT-60);
@@ -129,11 +131,13 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
     @Override
     public void dispose() {
+
         font.dispose();
     }
 
     @Override
     public void setOptions(int laps, int lives) {
+
         this.lapsCounter = laps;
         this.livesCounter = lives;
         client.sendOptionsParameters(laps, lives);
@@ -141,6 +145,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
     @Override
     public void onServerIsReady() {
+
         isServerReady = true;
     }
 }

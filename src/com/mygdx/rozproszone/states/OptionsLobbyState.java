@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.rozproszone.Config;
-import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 
 /**
@@ -54,10 +53,12 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
 
     @Override
     public void handleInput() {
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             if(selectedOption < options.length - 1)
                 ++selectedOption;
         }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             if(selectedOption > 0)
                 --selectedOption;
@@ -75,8 +76,6 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
                 Gdx.input.getTextInput(this,"Enter number of Lives",Integer.toString(livesCount),"");
             }
             else if(selectedOption == 2) {
-                // go back to HostLobbyState
-                //gsm.set(new HostLobbyState(gsm, this.lapsCount, ip));
                 optionsListener.setOptions(lapsCount, livesCount);
                 gsm.pop();
                 dispose();
@@ -86,11 +85,13 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
 
     @Override
     public void update(float dt) {
+
         handleInput();
     }
 
     @Override
     public void render(SpriteBatch batch) {
+
         batch.begin();
 
         for(int i = 0; i < options.length; ++i) {
@@ -114,10 +115,13 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
 
     @Override
     public void dispose() {
+
         font.dispose();
     }
+
     @Override
     public void input(String string) {
+
         if (enterLaps) {
             try {
                 lapsCount = Integer.parseInt(string);
@@ -138,10 +142,12 @@ public class OptionsLobbyState extends GameState implements Input.TextInputListe
 
     @Override
     public void canceled() {
+
         lapsCount = 3;
     }
 
     public void setOptionsListener(OptionsListener optionsListener) {
+
         this.optionsListener = optionsListener;
     }
 }

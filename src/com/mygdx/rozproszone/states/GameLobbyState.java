@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.rozproszone.Config;
-import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Server;
@@ -18,6 +17,7 @@ import com.mygdx.rozproszone.network.Server;
  */
 
 public class GameLobbyState extends GameState implements Client.LobbyListener {
+
     private BitmapFont font;
     private int lapsCounter;
     private String ip;
@@ -31,13 +31,13 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
     Client client;
 
     protected GameLobbyState(GameStateManager gsm, String ip) {
+
         super(gsm);
         this.ip = ip;
         selectedOption = 0;
         this.isStarting = false;
-        //this.lapsCounter = 3;
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Config.FILES_FONT));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
         font = generator.generateFont(parameter);
@@ -54,10 +54,12 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
 
     @Override
     public void handleInput() {
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             if(selectedOption < options.length - 1)
                 ++selectedOption;
         }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             if(selectedOption > 0)
                 --selectedOption;
@@ -66,22 +68,11 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 
             if(selectedOption == 0) {
-
-                // join server
                 gsm.set(new JoinServerState(gsm,ip));
                 dispose();
-
-                /*P*/
-//                dispose();
             }
         }
-        /*
-            lapsCounter = LobbyPacket.laps;
-            isStarting = LobbyPacket.isStarting;
 
-        */
-
-        //isStarting = true;
         if (isStarting)
         {
             PlayState playState = new PlayState(gsm);
@@ -98,11 +89,13 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
 
     @Override
     public void update(float dt) {
+
         handleInput();
     }
 
     @Override
     public void render(SpriteBatch batch) {
+
         batch.begin();
         font.setColor(Color.GREEN);
         font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Config.WIDTH/2-200, Config.HEIGHT-60);
@@ -123,21 +116,25 @@ public class GameLobbyState extends GameState implements Client.LobbyListener {
 
     @Override
     public void dispose() {
+
         font.dispose();
     }
 
     @Override
     public void onGameStart() {
+
         isStarting = true;
     }
 
     @Override
     public void onLapsCountChanged(int lapsCount) {
+
         this.lapsCounter = lapsCount;
     }
 
     @Override
     public void onLivesCountChanged(int livesCount) {
+
         this.livesCounter = livesCount;
     }
 }

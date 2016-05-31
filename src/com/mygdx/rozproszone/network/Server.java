@@ -1,6 +1,5 @@
 package com.mygdx.rozproszone.network;
 
-import com.mygdx.rozproszone.network.packets.CommandPacket;
 import com.mygdx.rozproszone.network.packets.InfoPacket;
 import com.mygdx.rozproszone.network.packets.PacketsConstants;
 
@@ -35,11 +34,13 @@ public class Server implements Runnable{
      private MessageProcessor messageProcessor = new MessageProcessor();
      
      public Server(int players) {
+
          this.playersCount = players;
      }
      
      @Override
      public void run() {
+
          Thread processorThread = new Thread(messageProcessor);
          processorThread.start();
          try (ServerSocket server = new ServerSocket(PORT)) {
@@ -60,8 +61,7 @@ public class Server implements Runnable{
                          connectedPlayers++;
 
                          if(connectedPlayers == playersCount) {
-                             // all players have connected, time to notify game owner server is ready
-                             // default command packet id = 0, which is admin/server owner id
+
                              messageProcessor.addPacket(new InfoPacket(PacketsConstants.INFO_SERVER_IS_READY));
                          }
                      }
@@ -78,10 +78,12 @@ public class Server implements Runnable{
      }
      
      public synchronized void stop() {
+
          running = false;
      }
      
      public synchronized void addInetAddress(InetAddress addr) {
+
          clients.add(addr);
      }
 }
