@@ -213,6 +213,10 @@ public class Player {
         return this.ID;
     }
 
+    public void setID(int ID){
+        this.ID = ID;
+    }
+
     public int getLives(){
 
         return this.lives;

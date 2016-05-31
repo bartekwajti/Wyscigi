@@ -171,10 +171,11 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setAngle(state.angle);
                 player.setLaps(state.lapsCount);//no angle in player
                 player.setLives(state.lives);
+                player.setID(state.playerID);
                 checkPlayersCollision(player);
 
             } else {
-                player = new Player(state.position.x,state.position.y, Config.PLAYER_IMAGE_FILE_NAMES[state.playerID], state.angle,state.lapsCount,playerID,state.lives);
+                player = new Player(state.position.x,state.position.y, Config.PLAYER_IMAGE_FILE_NAMES[state.playerID], state.angle,state.lapsCount,state.playerID,state.lives);
                 players.put(key, player);
             }
         }
