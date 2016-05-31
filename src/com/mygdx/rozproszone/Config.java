@@ -71,7 +71,7 @@ public class Config {
 
     //File names
 
-    public static final String FILES_FONT ="kremlin.ttf";
+    public static final String FILES_FONT ="FasterOne-Regular.ttf";
     public static final String FILES_MAP="assets//mapa.tmx";
     public static final String FILES_SCOREBOARD ="ScoreBoard.jpg";
     public static final String FILES_ENDING_FLAG = "endRaceFlag.png";
