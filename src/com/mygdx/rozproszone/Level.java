@@ -1,6 +1,7 @@
 package com.mygdx.rozproszone;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -96,6 +97,8 @@ public class Level {
             winnerFlagSprite.draw(batch);
             font.setColor(Config.COLORS[winningID]);
             font.draw(batch, "THE WINNER IS " + Config.PLAYERS_NAMES[winningID], (Config.WIDTH - scoreBoardTexture.getWidth())/2.0f  ,(Config.HEIGHT + winnerFlagSprite.getHeight())/2.0f);
+            font.setColor(Color.WHITE);
+            font.draw(batch,"RESTART GAME",(Config.WIDTH - scoreBoardTexture.getWidth())/2.0f ,Config.HEIGHT/2.0f - winnerFlagSprite.getHeight() - font.getXHeight());
         }
     }
     
@@ -133,5 +136,9 @@ public class Level {
     public void playerWinning(int id) {
         playerHasWon = true;
         winningID = id;
+    }
+
+    public void newGame() {
+        playerHasWon = false;
     }
 }

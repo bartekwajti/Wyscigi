@@ -59,6 +59,15 @@ public class Player {
         this.laps = laps;
     }
 
+    private void setCheckLapsFromBeginning(){
+        lapsCounter = 0;
+        this.checkLapsHelper = 4;
+        for (int i =0;i<4;i++){
+            lapsCheck[i] = false;
+        }
+        lapsCheck[lapsCounter] = true;
+
+    }
     public void checkLaps(){
 
         if (lapsCheck[0] && positionX>=720)
@@ -265,6 +274,20 @@ public class Player {
         new Timer().schedule(new WaitAfterCrash(player){
         },3000);
 
+    }
+
+    public void endGame(){
+        setAbleToMove(false);
+    }
+
+    public void startedNewGame(int hostLives, int hostLaps) {
+        setLives(hostLives);
+        setLaps(hostLaps);
+        setPositionX(Config.PLAYER_STARTING_POSITION_X[getID()]);
+        setPositionY(Config.PLAYER_STARTING_POSITION_Y[getID()]);
+        setAngle(360.f);
+        setAbleToMove(true);
+        setCheckLapsFromBeginning();
     }
 
     private class WaitAfterCrash extends TimerTask{

@@ -44,6 +44,7 @@ public class PlayState extends GameState implements PacketProvider {
     private Float newX;
     private Float newY;
     private boolean velocityFlag = false;
+    private boolean endGame;
 
 
 
@@ -53,11 +54,23 @@ public class PlayState extends GameState implements PacketProvider {
         level=new Level();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
+        endGame = false;
 
     }
 
     @Override
     public void update(float dt) {
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        {
+            if (endGame)
+            {
+                    currentPlayer.startedNewGame(hostLives,hostLaps);
+
+                    endGame = false;
+                    level.newGame();
+            }
+        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
@@ -297,10 +310,15 @@ public class PlayState extends GameState implements PacketProvider {
             Player player = (Player)entry.getValue();
             if (player.getLaps() == 0){
                 level.playerWinning(player.getID());
+                currentPlayer.endGame();
+                endGame = true;
+                break;
             }
         }
         if (currentPlayer.getLaps() == 0){
             level.playerWinning(currentPlayer.getID());
+            currentPlayer.endGame();
+            endGame = true;
         }
     }
     
