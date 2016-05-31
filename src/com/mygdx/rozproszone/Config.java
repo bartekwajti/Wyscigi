@@ -74,6 +74,7 @@ public class Config {
     public static final String FILES_FONT ="kremlin.ttf";
     public static final String FILES_MAP="assets//mapa.tmx";
     public static final String FILES_SCOREBOARD ="ScoreBoard.jpg";
+    public static final String FILES_ENDING_FLAG = "endRaceFlag.png";
 
     public static final String[] PLAYER_IMAGE_FILE_NAMES ={
             "player1.png",

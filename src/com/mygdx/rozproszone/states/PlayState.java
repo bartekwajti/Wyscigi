@@ -35,8 +35,8 @@ public class PlayState extends GameState implements PacketProvider {
     private int hostLaps;
     private int hostLives;
 
-    String server;
-    Client client;
+    private String server;
+    private Client client;
 
     private int playerID =0;
 
@@ -107,7 +107,7 @@ public class PlayState extends GameState implements PacketProvider {
             
             if(currentPlayer.getVelocity() < 100) currentPlayer.changeVelocity(5);
             
-            if(currentPlayer.getVelocity() > 50)angleDelta = new Float (600/currentPlayer.getVelocity());
+            if(currentPlayer.getVelocity() > 50)angleDelta = (float) (600 / currentPlayer.getVelocity());
 
         }
         else if(currentPlayer.getVelocity() > 0)
@@ -154,7 +154,6 @@ public class PlayState extends GameState implements PacketProvider {
                         currentPlayer.getCarImage().rotate(1);
                         currentPlayer.changeAngle((-1));
                     }
-
             }
         }
         currentPlayer.checkLaps();
@@ -169,7 +168,7 @@ public class PlayState extends GameState implements PacketProvider {
                 player.setPositionX(state.position.x);
                 player.setPositionY(state.position.y);
                 player.setAngle(state.angle);
-                player.setLaps(state.lapsCount);//no angle in player
+                player.setLaps(state.lapsCount);
                 player.setLives(state.lives);
                 player.setID(state.playerID);
                 checkPlayersCollision(player);
@@ -179,6 +178,7 @@ public class PlayState extends GameState implements PacketProvider {
                 players.put(key, player);
             }
         }
+        checkWinConditions();
     }
 
     @Override
@@ -191,6 +191,7 @@ public class PlayState extends GameState implements PacketProvider {
             level.draw((Player)entry.getValue());
             level.drawPlayerLaps((Player)entry.getValue());
         }
+
         level.updateView();
     }
 
@@ -290,5 +291,17 @@ public class PlayState extends GameState implements PacketProvider {
     public void setLives(int lives) {
 
         this.hostLives = lives;}
+
+    private void checkWinConditions(){
+        for (Map.Entry entry : players.entrySet()) {
+            Player player = (Player)entry.getValue();
+            if (player.getLaps() == 0){
+                level.playerWinning(player.getID());
+            }
+        }
+        if (currentPlayer.getLaps() == 0){
+            level.playerWinning(currentPlayer.getID());
+        }
+    }
     
 }
