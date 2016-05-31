@@ -41,8 +41,8 @@ public class Config {
 
     };
 
-    public static final Float STRARTING_POSITION_X = 150.0f;
-    public static final Float STRARTING_POSITION_Y = 400.0f;
+    public static final Float STARTING_POSITION_X = 150.0f;
+    public static final Float STARTING_POSITION_Y = 400.0f;
     
     public static final int PLAYER_NAME_POSITION_X=1040;
     public static final int PLAYER_NAME_POSITION_Y=640;
@@ -53,17 +53,17 @@ public class Config {
 
 
     public static final Float[] PLAYER_STARTING_POSITION_X ={
-            STRARTING_POSITION_X,
-            STRARTING_POSITION_X +60.0f,
-            STRARTING_POSITION_X,
-            STRARTING_POSITION_X +60.0f
+            STARTING_POSITION_X,
+            STARTING_POSITION_X +60.0f,
+            STARTING_POSITION_X,
+            STARTING_POSITION_X +60.0f
     };
 
     public static final Float[] PLAYER_STARTING_POSITION_Y ={
-            STRARTING_POSITION_Y ,
-            STRARTING_POSITION_Y ,
-            STRARTING_POSITION_Y -80.0f,
-            STRARTING_POSITION_Y -80.0f,
+            STARTING_POSITION_Y ,
+            STARTING_POSITION_Y ,
+            STARTING_POSITION_Y -80.0f,
+            STARTING_POSITION_Y -80.0f,
     };
     
     //Game State parameters
