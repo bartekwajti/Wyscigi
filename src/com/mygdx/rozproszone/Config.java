@@ -1,4 +1,5 @@
 package com.mygdx.rozproszone;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  *
@@ -15,7 +16,7 @@ public class Config {
 
     //SERVER parameters
 
-    public static final int NUMBER_OF_PLAYERS_IN_GAME = 2;
+    public static final int NUMBER_OF_PLAYERS_IN_GAME = 4;
     public static final int NUMBER_OF_LIVES = 3;
     public static final int NUMBER_OF_LAPS = 3;
 
@@ -25,8 +26,46 @@ public class Config {
 
     //Game parameters
 
+    public static final String[] PLAYERS_NAMES ={
+            "BLACK",
+            "YELLOW",
+            "RED",
+            "BLUE",
+    };
+
+    public static final Color [] COLORS = {
+            Color.BLACK,
+            Color.YELLOW,
+            Color.FIREBRICK,
+            Color.BLUE,
+
+    };
+
+    public static final Float STRARTING_POSITION_X = 150.0f;
+    public static final Float STRARTING_POSITION_Y = 400.0f;
+    
+    public static final int PLAYER_NAME_POSITION_X=1040;
+    public static final int PLAYER_NAME_POSITION_Y=640;
+    public static final int PLAYER_LAPS_POSITION_X=1200;
+    public static final int PLAYER_LAPS_POSITION_Y=640;
+    public static final int PLAYER_LIVES_POSITION_X=1300;
+    public static final int PLAYER_LIVES_POSITION_Y=640;
 
 
+    public static final Float[] PLAYER_STARTING_POSITION_X ={
+            STRARTING_POSITION_X,
+            STRARTING_POSITION_X +60.0f,
+            STRARTING_POSITION_X,
+            STRARTING_POSITION_X +60.0f
+    };
+
+    public static final Float[] PLAYER_STARTING_POSITION_Y ={
+            STRARTING_POSITION_Y ,
+            STRARTING_POSITION_Y ,
+            STRARTING_POSITION_Y -80.0f,
+            STRARTING_POSITION_Y -80.0f,
+    };
+    
     //Game State parameters
 
 
@@ -35,20 +74,6 @@ public class Config {
     public static final String FILES_FONT ="kremlin.ttf";
     public static final String FILES_MAP="assets//mapa.tmx";
     public static final String FILES_SCOREBOARD ="ScoreBoard.jpg";
-    public static final String FILES_PLANSZA="plansza.jpg";
-
-    public static final String[] NUMBER_FILE_NAMES ={
-            "One.jpg",
-            "Two.jpg",
-            "Three.jpg",
-            "Four.jpg",
-            "Five.jpg",
-            "Six.jpg",
-            "Seven.jpg",
-            "Eight.jpg",
-            "Nine.jpg",
-            "MoreThanNine.jpg"
-    };
 
     public static final String[] PLAYER_IMAGE_FILE_NAMES ={
             "player1.png",

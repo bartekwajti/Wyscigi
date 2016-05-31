@@ -24,17 +24,15 @@ public class Game extends ApplicationAdapter {
         gsm.push(new ServerClientState(gsm));
         
         batch = new SpriteBatch();
-        
     }
     
     @Override
     public void render () {
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         gsm.update(Gdx.graphics.getDeltaTime());
         gsm.render(batch);
-        
-       
     }
 
     @Override

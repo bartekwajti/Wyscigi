@@ -29,8 +29,10 @@ public class PlayState extends GameState implements PacketProvider {
 
     private Player player1;
     private Level level;
+
     private int hostLaps;
     private int hostLives;
+
     String server;
     private int playerID = 0;
     Client client;
@@ -39,14 +41,13 @@ public class PlayState extends GameState implements PacketProvider {
     private Float newX;
     private Float newY;
     private boolean velocityFlag = false;
-    private Float startingPositionX = 150.0f;
-    private Float startingPositionY = 400.0f;
 
     private HashMap<Integer, Player> players = new HashMap<>();
-    
+
     public PlayState(GameStateManager gsm) {
+
         super(gsm);
-        level=new Level(Config.FILES_PLANSZA);
+        level=new Level();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
 
@@ -54,6 +55,7 @@ public class PlayState extends GameState implements PacketProvider {
 
     @Override
     public void update(float dt) {
+
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
             velocityFlag = true;
@@ -63,6 +65,7 @@ public class PlayState extends GameState implements PacketProvider {
             checkSlowDust(newX,newY);
             
             player1.changePosition(newX,newY );
+
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             {
                 player1.getCarImage().rotate(-angleDelta);
@@ -181,6 +184,7 @@ public class PlayState extends GameState implements PacketProvider {
         level.drawPlayerLaps(player1);
 
         for (Map.Entry entry : players.entrySet()) {
+
             level.draw((Player)entry.getValue());
             level.drawPlayerLaps((Player)entry.getValue());
         }
@@ -189,6 +193,7 @@ public class PlayState extends GameState implements PacketProvider {
 
     @Override
     public void handleInput() {
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -196,8 +201,10 @@ public class PlayState extends GameState implements PacketProvider {
 
         Rectangle mainPlayer = new Rectangle();
         Rectangle otherPlayer = new Rectangle();
+
         mainPlayer.set(player1.getPositionX(),player1.getPositionY(),player1.getCarImage().getWidth(),player1.getCarImage().getHeight());
         otherPlayer.set(player.getPositionX(),player.getPositionY(),player.getCarImage().getWidth(),player.getCarImage().getHeight());
+
         if (mainPlayer.overlaps(otherPlayer)){
             player1.crash(player);
         }
@@ -224,16 +231,18 @@ public class PlayState extends GameState implements PacketProvider {
     }
     
     private void checkSlowDust(Float x, Float y){
+
         for (int i = 0; i < level.getSlowDustObjects().getCount(); i++) {
-            RectangleMapObject obj = (RectangleMapObject) level.getSlowDustObjects().get(i);
+            RectangleMapObject obj = (RectangleMapObject) level.getCollisionObjects().get(i);
+
             Rectangle rect = obj.getRectangle();
             Rectangle recPlayer = new Rectangle();
             recPlayer.set(player1.getPositionX()+x,player1.getPositionY()+y,player1.getCarImage().getWidth(),player1.getCarImage().getHeight());
             
             
             if (recPlayer.overlaps(rect)) {
-                newX /=2;
-                newY /=2;
+                newX /=(float)1.5;
+                newY /=(float)1.5;
                 break;
             }
         }
@@ -247,6 +256,7 @@ public class PlayState extends GameState implements PacketProvider {
 
     @Override
     public GamePacket getPacket() {
+
         GamePacket gamePacket = new GamePacket(new Vector2(player1.getPositionX(), player1.getPositionY()),
         player1.getAngle(),
         playerID, player1.getLaps(),player1.getLives());
@@ -255,55 +265,32 @@ public class PlayState extends GameState implements PacketProvider {
 
     @Override
     public void onPlayerDisconnected(Integer key) {
+
         players.remove(key);
     }
 
     public void setServer(String server) {
 
             this.server = server;
-            /*client = new Client(server, Server.PORT, this);
-
-            this.playerID = client.getSetupGamePacket().playerID;
-            switch (this.playerID)
-            {
-                case 0:
-                    player1= new Player(150,450,"player1.png",360.0f,hostLaps,1);
-                    break;
-                case 1:
-                    player1= new Player(150,450,"player2.png",360.0f,hostLaps,1);
-                    break;
-                case 2:
-                    player1= new Player(150,450,"player3.png",360.0f,hostLaps,1);
-                    break;
-                case 3:
-                    player1= new Player(150,450,"player4.png",360.0f,hostLaps,1);
-                    break;
-            }*/
     }
+
     public void setClient(Client client) {
+
         this.client = client;
 
         this.playerID = client.getSetupGamePacket().playerID;
-        switch (this.playerID)
-        {
-            case 0:
-                player1= new Player(startingPositionX, startingPositionY,"player1.png",360.0f,hostLaps,0,hostLives);
-                break;
-            case 1:
-                player1= new Player(startingPositionX +60.0f, startingPositionY,"player2.png",360.0f,hostLaps,1,hostLives);
-                break;
-            case 2:
-                player1= new Player(startingPositionX, startingPositionY -80.0f,"player3.png",360.0f,hostLaps,2,hostLives);
-                break;
-            case 3:
-                player1= new Player(startingPositionX +60.0f, startingPositionY -80.0f,"player4.png",360.0f,hostLaps,3,hostLives);
-                break;
-        }
+
+        player1= new Player(Config.PLAYER_STARTING_POSITION_X[this.playerID], Config.PLAYER_STARTING_POSITION_Y[this.playerID],Config.PLAYERS_NAMES[this.playerID],360.0f,hostLaps,this.playerID,hostLives);
+
     }
 
     public void setLaps(int laps){
+
         this.hostLaps = laps;
     }
-    public void setLives(int lives) {this.hostLives = lives;}
+
+    public void setLives(int lives) {
+
+        this.hostLives = lives;}
     
 }

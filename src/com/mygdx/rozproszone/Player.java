@@ -15,6 +15,7 @@ public class Player {
 
     private float positionX;
     private float positionY;
+
     private float angle;
     private double velocity;
     private int laps;

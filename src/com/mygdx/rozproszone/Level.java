@@ -13,8 +13,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.graphics.Color;
-
 
 /**
  *
@@ -26,10 +24,7 @@ public class Level {
     private BitmapFont font;
     
     private SpriteBatch batch;
-    
-    private Texture levelTexture;
-    private Sprite levelSprite;
-    
+
     private TiledMap map;
     private TiledMapRenderer tiledMapRenderer;
     private OrthographicCamera cam;
@@ -44,21 +39,7 @@ public class Level {
     private Texture scoreBoardTexture;
     private Sprite scoreBoardSprite;
 
-    private Texture numbersTexture[];
-    private Sprite  numbersSprite[];
-
-    int lapsPositionX;
-    int lapsPositionY;
-
-
-
-    public Level(String levelTextureName){
-
-        this.lapsPositionX = 250;
-        this.lapsPositionY = 600;
-
-        this.levelTexture=new Texture(levelTextureName);
-        this.levelSprite=new Sprite(this.levelTexture,Config.WIDTH,Config.HEIGHT);
+    public Level(){
 
         batch = new SpriteBatch(); 
         map = new TmxMapLoader().load(Config.FILES_MAP);
@@ -70,6 +51,7 @@ public class Level {
         layer0 = map.getLayers().get(0);
         layer1 = map.getLayers().get(1);
         layer2 = map.getLayers().get(2);
+
         layer0.setVisible(true);
         layer1.setVisible(true);
         layer2.setVisible(true);
@@ -87,15 +69,6 @@ public class Level {
         scoreBoardSprite = new Sprite(scoreBoardTexture);
         scoreBoardSprite.setPosition(Config.WIDTH - scoreBoardTexture.getWidth(),0);
 
-        numbersTexture = new Texture[10];
-        numbersSprite = new Sprite[10];
-
-        for (int i =0;i<10;i++){
-
-            numbersTexture[i] = new Texture(Config.NUMBER_FILE_NAMES[i]);
-            numbersSprite[i] = new Sprite(numbersTexture[i]);
-            numbersSprite[i].setPosition(Config.WIDTH - scoreBoardTexture.getWidth() + lapsPositionX,lapsPositionY);
-        }
     }
     
     
@@ -113,35 +86,16 @@ public class Level {
     public void draw(Player player){
 
         player.getCarImage().draw(batch);
+        drawPlayerLaps(player);
     }
 
     public void drawPlayerLaps(Player player){
 
-        int laps = player.getLaps();
-        int displacement = player.getID();
+        font.setColor(Config.COLORS[player.getID()]);
+        font.draw(batch, Config.PLAYERS_NAMES[player.getID()], Config.PLAYER_NAME_POSITION_X ,Config.PLAYER_NAME_POSITION_Y - player.getID()*40);
+        font.draw(batch,""+ player.getLaps(), Config.PLAYER_LAPS_POSITION_X  ,Config.PLAYER_LAPS_POSITION_Y - (player.getID())*40);
+        font.draw(batch,""+ player.getLives(), Config.PLAYER_LIVES_POSITION_X ,Config.PLAYER_LIVES_POSITION_Y - (player.getID())*40);
 
-        switch (displacement) {
-            case 0:
-                font.setColor(Color.BLACK);
-                font.draw(batch, "Black " + laps + " Lives " + player.getLives(), Config.WIDTH - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
-                break;
-            case 1:
-                font.setColor(Color.GOLD);
-                font.draw(batch, "Yellow " + laps + " Lives " + player.getLives(), Config.WIDTH - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
-                break;
-            case 2:
-                font.setColor(Color.FIREBRICK);
-                font.draw(batch, "Red " + laps + " Lives " + player.getLives(), Config.WIDTH - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
-                break;
-            case 3:
-                font.setColor(Color.SKY);
-                font.draw(batch, "Blue " + laps + " Lives " + player.getLives(), Config.WIDTH - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
-                break;
-            default:
-                font.setColor(Color.WHITE);
-                font.draw(batch, "DEFAULT", Config.WIDTH - scoreBoardTexture.getWidth() + lapsPositionX - 200.0f, lapsPositionY - displacement * 30 + font.getXHeight());
-                break;
-        }
     }
         
     public void updateView(){
