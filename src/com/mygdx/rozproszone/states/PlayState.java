@@ -72,101 +72,83 @@ public class PlayState extends GameState implements PacketProvider {
             }
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP))
-        {
-            velocityFlag = true;
-            newX = (float) (Math.sin(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
-            newY = (float) (Math.cos(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
-            checkCollision(newX,newY);
-            checkSlowDust(newX,newY);
-            
-            currentPlayer.changePosition(newX,newY );
+        if (currentPlayer.getAbleToMove() && !currentPlayer.isCrashed()) {
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                velocityFlag = true;
+                newX = (float) (Math.sin(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
+                newY = (float) (Math.cos(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
+                checkCollision(newX, newY);
+                checkSlowDust(newX, newY);
 
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            {
-                currentPlayer.getCarImage().rotate(-angleDelta);
-                currentPlayer.changeAngle((angleDelta));
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            {
-                currentPlayer.getCarImage().rotate(angleDelta);
-                currentPlayer.changeAngle(((angleDelta*-1.0f)));
-            }
-            if(currentPlayer.getVelocity() < 300) currentPlayer.changeVelocity(10);
-            
-            if(currentPlayer.getVelocity()> 150)angleDelta = (float) (600 / currentPlayer.getVelocity());
-        }
-        
-        
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-        {
-            velocityFlag = false;
-            newX = (float) (-Math.sin(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
-            newY = (float) (-Math.cos(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
-            checkCollision(newX,newY);
-            checkSlowDust(newX,newY);
+                currentPlayer.changePosition(newX, newY);
 
-            currentPlayer.changePosition(newX, newY);
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            {
-                currentPlayer.getCarImage().rotate(-angleDelta);
-                currentPlayer.changeAngle((angleDelta));
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            {
-                currentPlayer.getCarImage().rotate(angleDelta);
-                currentPlayer.changeAngle(((angleDelta*-1.0f)));
-            }
-            
-            if(currentPlayer.getVelocity() < 100) currentPlayer.changeVelocity(5);
-            
-            if(currentPlayer.getVelocity() > 50)angleDelta = (float) (600 / currentPlayer.getVelocity());
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    currentPlayer.getCarImage().rotate(-angleDelta);
+                    currentPlayer.changeAngle((angleDelta));
+                } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    currentPlayer.getCarImage().rotate(angleDelta);
+                    currentPlayer.changeAngle(((angleDelta * -1.0f)));
+                }
+                if (currentPlayer.getVelocity() < 300) currentPlayer.changeVelocity(10);
 
-        }
-        else if(currentPlayer.getVelocity() > 0)
-        {
+                if (currentPlayer.getVelocity() > 150) angleDelta = (float) (600 / currentPlayer.getVelocity());
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                velocityFlag = false;
+                newX = (float) (-Math.sin(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
+                newY = (float) (-Math.cos(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
+                checkCollision(newX, newY);
+                checkSlowDust(newX, newY);
+
+                currentPlayer.changePosition(newX, newY);
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    currentPlayer.getCarImage().rotate(-angleDelta);
+                    currentPlayer.changeAngle((angleDelta));
+                } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    currentPlayer.getCarImage().rotate(angleDelta);
+                    currentPlayer.changeAngle(((angleDelta * -1.0f)));
+                }
+
+                if (currentPlayer.getVelocity() < 100) currentPlayer.changeVelocity(5);
+
+                if (currentPlayer.getVelocity() > 50) angleDelta = (float) (600 / currentPlayer.getVelocity());
+
+            } else if (currentPlayer.getVelocity() > 0) {
 
                 if (velocityFlag) {
                     newX = (float) (Math.sin(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
                     newY = (float) (Math.cos(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
                     currentPlayer.changeVelocity(-10);
-                    checkCollision(newX,newY);
-                    
-                    checkSlowDust(newX,newY);
+                    checkCollision(newX, newY);
+
+                    checkSlowDust(newX, newY);
 
                     currentPlayer.changePosition(newX, newY);
-                    
-                    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-                    {
+
+                    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                         currentPlayer.getCarImage().rotate(-1);
                         currentPlayer.changeAngle((1));
-                    }
-                    else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                    {
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                         currentPlayer.getCarImage().rotate(1);
                         currentPlayer.changeAngle((-1));
                     }
 
-                }
-                else{
+                } else {
                     currentPlayer.changeVelocity(-5);
                     newX = (float) (-Math.sin(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
                     newY = (float) (-Math.cos(currentPlayer.getAngle() * Math.PI / 180) * currentPlayer.getVelocity() * dt);
-                    checkCollision(newX,newY);
-                    checkSlowDust(newX,newY);
+                    checkCollision(newX, newY);
+                    checkSlowDust(newX, newY);
 
                     currentPlayer.changePosition(newX, newY);
-                    
-                    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-                    {
+
+                    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                         currentPlayer.getCarImage().rotate(-1);
                         currentPlayer.changeAngle((1));
-                    }
-                    else if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                    {
+                    } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                         currentPlayer.getCarImage().rotate(1);
                         currentPlayer.changeAngle((-1));
                     }
+                }
             }
         }
         currentPlayer.checkLaps();
@@ -219,7 +201,7 @@ public class PlayState extends GameState implements PacketProvider {
         Rectangle otherPlayer = new Rectangle();
         mainPlayer.set(currentPlayer.getPositionX(),currentPlayer.getPositionY(),currentPlayer.getCarImage().getWidth(),currentPlayer.getCarImage().getHeight());
         otherPlayer.set(player.getPositionX(),player.getPositionY(),player.getCarImage().getWidth(),player.getCarImage().getHeight());
-        if (mainPlayer.overlaps(otherPlayer)){
+        if (mainPlayer.overlaps(otherPlayer) && !currentPlayer.isCrashed() && currentPlayer.getAbleToMove()){
             currentPlayer.crash(player);
         }
 

@@ -16,7 +16,7 @@ public class Config {
 
     //SERVER parameters
 
-    public static final int NUMBER_OF_PLAYERS_IN_GAME = 4;
+    public static final int NUMBER_OF_PLAYERS_IN_GAME = 2;
     public static final int NUMBER_OF_LIVES = 3;
     public static final int NUMBER_OF_LAPS = 3;
 

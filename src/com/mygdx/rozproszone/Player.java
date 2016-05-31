@@ -248,6 +248,10 @@ public class Player {
         this.lives++;
     }
 
+    public boolean isCrashed() {
+        return isCrashed;
+    }
+
     public void changeTextureToPlay(Player otherPlayer){
 
         carTexture = new Texture(Config.PLAYER_IMAGE_FILE_NAMES[this.ID]);
@@ -337,6 +341,7 @@ public class Player {
                         break;
                 }
                 ableToMove = true;
+                velocity = 0.0;
             });
 
 
