@@ -233,7 +233,7 @@ public class PlayState extends GameState implements PacketProvider {
     private void checkSlowDust(Float x, Float y){
 
         for (int i = 0; i < level.getSlowDustObjects().getCount(); i++) {
-            RectangleMapObject obj = (RectangleMapObject) level.getCollisionObjects().get(i);
+            RectangleMapObject obj = (RectangleMapObject) level.getSlowDustObjects().get(i);
 
             Rectangle rect = obj.getRectangle();
             Rectangle recPlayer = new Rectangle();
@@ -280,7 +280,7 @@ public class PlayState extends GameState implements PacketProvider {
 
         this.playerID = client.getSetupGamePacket().playerID;
 
-        player1= new Player(Config.PLAYER_STARTING_POSITION_X[this.playerID], Config.PLAYER_STARTING_POSITION_Y[this.playerID],Config.PLAYERS_NAMES[this.playerID],360.0f,hostLaps,this.playerID,hostLives);
+        player1= new Player(Config.PLAYER_STARTING_POSITION_X[this.playerID], Config.PLAYER_STARTING_POSITION_Y[this.playerID],Config.PLAYER_IMAGE_FILE_NAMES[this.playerID],360.0f,hostLaps,this.playerID,hostLives);
 
     }
 
