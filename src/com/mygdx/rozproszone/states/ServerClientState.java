@@ -57,7 +57,7 @@ public class ServerClientState extends GameState {
            
             if(selectedOption == 0) {
 
-                Server server = new Server(Config.NUMBER_OF_PLAYERS_IN_GAME);
+                Server server = new Server(2);
                 Thread th = new Thread(server);
                 th.start();
 

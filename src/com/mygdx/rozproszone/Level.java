@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -33,11 +34,16 @@ public class Level {
     private MapLayer layer1;
     private MapLayer layer2;
     
-    MapObjects collisionObjects;
-    MapObjects slowDustObjects;
+    private MapObjects collisionObjects;
+    private MapObjects slowDustObjects;
     
     private Texture scoreBoardTexture;
     private Sprite scoreBoardSprite;
+
+    private Texture winnerFlagTexture;
+    private Sprite winnerFlagSprite;
+    private boolean playerHasWon;
+    private int winningID;
 
     public Level(){
 
@@ -69,6 +75,10 @@ public class Level {
         scoreBoardSprite = new Sprite(scoreBoardTexture);
         scoreBoardSprite.setPosition(Config.WIDTH - scoreBoardTexture.getWidth(),0);
 
+        winnerFlagTexture = new Texture(Config.FILES_ENDING_FLAG);
+        winnerFlagSprite = new Sprite(winnerFlagTexture);
+        winnerFlagSprite.setPosition((Config.WIDTH - scoreBoardTexture.getWidth())/2.0f,Config.HEIGHT/2.0f);
+        winningID = 0;
     }
     
     
@@ -81,6 +91,12 @@ public class Level {
 
         this.batch.begin();
         this.scoreBoardSprite.draw(batch);
+
+        if (playerHasWon){
+            winnerFlagSprite.draw(batch);
+            font.setColor(Config.COLORS[winningID]);
+            font.draw(batch, "THE WINNER IS " + Config.PLAYERS_NAMES[winningID], (Config.WIDTH - scoreBoardTexture.getWidth())/2.0f  ,(Config.HEIGHT + winnerFlagSprite.getHeight())/2.0f);
+        }
     }
     
     public void draw(Player player){
@@ -113,5 +129,9 @@ public class Level {
 
         return this.slowDustObjects;
     }
-             
+
+    public void playerWinning(int id) {
+        playerHasWon = true;
+        winningID = id;
+    }
 }
