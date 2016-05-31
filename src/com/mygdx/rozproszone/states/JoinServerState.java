@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.mygdx.rozproszone.Config;
-import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 
 /**
@@ -32,44 +31,41 @@ public class JoinServerState extends GameState implements TextInputListener {
     };
     
     public JoinServerState(GameStateManager gsm, String ip) {
+
         super(gsm);
         this.ip = ip;
         this.selectedOption = 0;
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("kremlin.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Config.FILES_FONT));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
-        //parameter.color = Color.GREEN;
         font = generator.generateFont(parameter);
         
         generator.dispose();
-        //ipInput.setDisabled(false);
-        //Gdx.input.setInputProcessor(this);
+
     }
 
     @Override
     public void handleInput() {
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+
             if(selectedOption < options.length - 1)
                 ++selectedOption;
         }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+
             if(selectedOption > 0)
                 --selectedOption;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+
             if (selectedOption == 0) {
-                //start server
                 Gdx.input.getTextInput(this,"Enter adress IP","localhost","");
-//                dispose();
             } else if (selectedOption == 1) {
-                // join server
                 GameLobbyState lobbyState = new GameLobbyState(gsm,ip);
 
                 gsm.set(lobbyState);
-
-                /*PlayState playState = new PlayState(gsm);
-                playState.setServer(ip);
-                gsm.set(playState);*/
                 dispose();
             } else if (selectedOption == 2) {
                 gsm.set(new ServerClientState(gsm));
@@ -81,11 +77,13 @@ public class JoinServerState extends GameState implements TextInputListener {
 
     @Override
     public void update(float dt) {
+
         handleInput();
     }
 
     @Override
     public void render(SpriteBatch batch) {
+
         batch.begin();
 
         font.setColor(Color.GREEN);
@@ -99,24 +97,24 @@ public class JoinServerState extends GameState implements TextInputListener {
 
             font.draw(batch, options[i], Config.WIDTH/2-200,Config.HEIGHT-200-i*font.getLineHeight());
         }
-
-        //font.draw(batch, "Press ENTER to type, S to start", Game.WIDTH/2-200, Game.HEIGHT-100-font.getLineHeight());
-
         
         batch.end();
     }
 
     @Override
     public void dispose() {
+
     }
 
     @Override
     public void input(String string) {
+
         ip = string;
     }
 
     @Override
-    public void canceled() {
+    public void canceled()  {
+
         ip = "localhost";
     }
     

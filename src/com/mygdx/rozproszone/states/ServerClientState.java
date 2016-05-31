@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.mygdx.rozproszone.Config;
-import com.mygdx.rozproszone.Game;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Server;
 
@@ -29,6 +28,7 @@ public class ServerClientState extends GameState {
     };
     
     public ServerClientState(GameStateManager gsm) {
+
         super(gsm);
         
         selectedOption = 0;
@@ -43,6 +43,7 @@ public class ServerClientState extends GameState {
 
     @Override
     public void handleInput() {
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             if(selectedOption < options.length - 1)
                 ++selectedOption;
@@ -55,22 +56,18 @@ public class ServerClientState extends GameState {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
            
             if(selectedOption == 0) {
-                //start server
-                Server server = new Server(2); //server for 4 players
+
+                Server server = new Server(Config.NUMBER_OF_PLAYERS_IN_GAME);
                 Thread th = new Thread(server);
                 th.start();
 
                 HostLobbyState lobbyState = new HostLobbyState(gsm,Config.NUMBER_OF_LAPS,"localhost",Config.NUMBER_OF_LIVES);
                 gsm.set(lobbyState);
                 dispose();
-                //server.stop();
-                /*PlayState playState = new PlayState(gsm);
-                playState.setServer("localhost");
-                gsm.set(playState);*/
-//                dispose();
+
             }
             else if(selectedOption == 1) {
-                // join server
+
                 gsm.set(new JoinServerState(gsm,"localhost"));
                 dispose();
             }
