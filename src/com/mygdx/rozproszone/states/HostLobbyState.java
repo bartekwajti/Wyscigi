@@ -11,6 +11,9 @@ import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Client;
 import com.mygdx.rozproszone.network.Server;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  *
  * @author Daniel && Bartlomiej && Przemysław
@@ -24,6 +27,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     private String ip;
     private int selectedOption;
     private boolean isServerReady;
+    private String currentIP;
     private String[] options = {
             "Start Game",
             "Options",
@@ -31,7 +35,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
     };
 
     Client client;
-    protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip, int livesCounter) {
+    protected HostLobbyState(GameStateManager gsm, int lapsCounter, String ip, int livesCounter) throws UnknownHostException {
 
         super(gsm);
         this.ip = ip;
@@ -44,7 +48,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
         font = generator.generateFont(parameter);
 
         generator.dispose();
-
+        currentIP = InetAddress.getLocalHost().getHostAddress();
         isServerReady = false;
         client = new Client(ip, Server.PORT);
         client.setServerListener(this);
@@ -103,6 +107,7 @@ public class HostLobbyState extends GameState implements OptionsLobbyState.Optio
 
         batch.begin();
         font.setColor(Color.GREEN);
+        font.draw(batch, "Your IP: " + currentIP, Config.WIDTH/2-200, Config.HEIGHT-20);
         font.draw(batch, "Laps Number: " + Integer.toString(lapsCounter), Config.WIDTH/2-200, Config.HEIGHT-60);
         font.draw(batch, "Lives Number: " + Integer.toString(livesCounter), Config.WIDTH/2-200, Config.HEIGHT-110);
 

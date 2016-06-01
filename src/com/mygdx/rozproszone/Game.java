@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.net.UnknownHostException;
+
 /**
  *
  * @author Daniel && Bartlomiej && Przemysław
@@ -30,8 +32,12 @@ public class Game extends ApplicationAdapter {
     public void render () {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        gsm.update(Gdx.graphics.getDeltaTime());
+
+        try {
+            gsm.update(Gdx.graphics.getDeltaTime());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         gsm.render(batch);
     }
 

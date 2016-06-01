@@ -2,6 +2,8 @@ package com.mygdx.rozproszone;
 
 import com.mygdx.rozproszone.states.GameState;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.net.UnknownHostException;
 import java.util.Stack;
 
 /**
@@ -34,7 +36,7 @@ public class GameStateManager {
         states.push(gameState);
     }
     
-    public void update(float dt) {
+    public void update(float dt) throws UnknownHostException {
 
         states.peek().update(dt);
     }

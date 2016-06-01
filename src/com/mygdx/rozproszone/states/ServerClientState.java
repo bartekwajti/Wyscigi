@@ -11,6 +11,8 @@ import com.mygdx.rozproszone.Config;
 import com.mygdx.rozproszone.GameStateManager;
 import com.mygdx.rozproszone.network.Server;
 
+import java.net.UnknownHostException;
+
 /**
  *
  * @author Daniel && Bartlomiej && Przemysław
@@ -42,7 +44,7 @@ public class ServerClientState extends GameState {
     }
 
     @Override
-    public void handleInput() {
+    public void handleInput() throws UnknownHostException {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             if(selectedOption < options.length - 1)
@@ -80,7 +82,7 @@ public class ServerClientState extends GameState {
     }
 
     @Override
-    public void update(float dt) {
+    public void update(float dt) throws UnknownHostException {
 
         handleInput();
     }
