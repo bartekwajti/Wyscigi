@@ -151,6 +151,7 @@ public class PlayState extends GameState implements PacketProvider {
                 }
             }
         }
+        currentPlayer.checkLives();
         currentPlayer.checkLaps();
         client.update();
 

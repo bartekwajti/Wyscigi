@@ -294,6 +294,12 @@ public class Player {
         setCheckLapsFromBeginning();
     }
 
+    public void checkLives() {
+        if (lives <= 0){
+            ableToMove = false;
+        }
+    }
+
     private class WaitAfterCrash extends TimerTask{
 
         private Player otherPlayer;
